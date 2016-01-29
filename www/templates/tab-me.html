@@ -12,7 +12,7 @@
             <a class="item item-icon-left" ng-repeat="EMA in EMAs" href="#">
                     <i ng-class="EMA.mood >= 5 ? 'icon ion-thumbsup' : 'icon ion-thumbsdown'"></i>"{{EMA.thought}}"
                 <span ng-class="EMA.mood >= 5 ? 'badge badge-balanced' : 'badge badge-assertive'" >{{EMA.mood}}</span>
-                <p>EMA.location.reversed</p>
+                <p>{{EMA.location}}</p>
             </a>
         </div>
     </ion-content>

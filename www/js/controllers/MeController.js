@@ -1,4 +1,4 @@
-angular.module('starter').controller('MeController', function($scope,$cordovaDeviceOrientation, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $ionicPlatform) {
+angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils) {
 
     var ref = new Firebase("https://thevibe.firebaseio.com/");
     var auth = ref.getAuth();
@@ -22,30 +22,38 @@ angular.module('starter').controller('MeController', function($scope,$cordovaDev
         });
     };
 
+    //broadcast event
+
     $ionicPlatform.ready(function() {
-        console.log($cordovaBackgroundGeolocation);
-        $cordovaBackgroundGeolocation.configure({})
-            .then(
-                null, // Background never resolves
-                function(err) { // error callback
-                    console.error(err);
-                },
-                function(location) { // notify callback
-                    console.log(location);
-                });
-
-
-        $scope.stopBackgroundGeolocation = function() {
-            $cordovaBackgroundGeolocation.stop();
+        var watchOptions = {
+            timeout: 5000,
+            enableHighAccuracy: false // may cause errors if true
         };
+
+        var watch = $cordovaGeolocation.watchPosition(watchOptions);
+        watch.then(
+            null,
+            function(err) {
+                // error
+                console.log(err);
+            },
+            function(position) {
+                var lat = position.coords.latitude
+                var long = position.coords.longitude
+                $scope.currentLocation = [lat, long];
+            });
 
     });
 
 
+    //iniitalize feed
+
     var setEMAs = function() {
-        var userRef = new Firebase("https://thevibe.firebaseio.com/users/" + $scope.currentUser.uid + "/emas");
-        $scope.EMAs = $firebaseArray(userRef);
+        var emaRef = new Firebase("https://thevibe.firebaseio.com/EMAs/");
+        $scope.EMAs = $firebaseArray(emaRef);
     }
+
+    // default login screen
 
     $scope.login = function(credentials) {
         UserService.login(credentials).then(function(resLogin) {
@@ -83,6 +91,8 @@ angular.module('starter').controller('MeController', function($scope,$cordovaDev
         });
     };
 
+    //create EMA modal
+
     $ionicModal.fromTemplateUrl('templates/createEMA.html', {
         scope: $scope
     }).then(function(modal) {
@@ -91,12 +101,25 @@ angular.module('starter').controller('MeController', function($scope,$cordovaDev
 
 
     $scope.createEMA = function(EMA) {
-        $scope.EMAs.$add({
-            thought: EMA.thought,
-            mood: EMA.mood,
-            timestamp: Firebase.ServerValue.TIMESTAMP
-        })
-        $scope.emaModal.hide();
+        Utils.getReverseGeo($scope.currentLocation).then(function(res) {
+            console.log(res);
+            $scope.EMAs.$add({
+                thought: EMA.thought,
+                mood: EMA.mood,
+                lat: $scope.currentLocation[0],
+                long: $scope.currentLocation[1],
+                location : res.data.display_name,
+                timestamp: Firebase.ServerValue.TIMESTAMP,
+                uid: $scope.currentUser.uid
+            })
+            $scope.emaModal.hide();
+        });
+
+
+    };
+
+    $scope.convertCoords = function(lat, long) {
+
     };
 
     init();
