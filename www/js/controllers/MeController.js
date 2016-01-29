@@ -1,4 +1,4 @@
-angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $ionicPlatform) {
+angular.module('starter').controller('MeController', function($scope,$cordovaDeviceOrientation, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $ionicPlatform) {
 
     var ref = new Firebase("https://thevibe.firebaseio.com/");
     var auth = ref.getAuth();
@@ -23,7 +23,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
     };
 
     $ionicPlatform.ready(function() {
-        
+        console.log($cordovaBackgroundGeolocation);
         $cordovaBackgroundGeolocation.configure({})
             .then(
                 null, // Background never resolves
