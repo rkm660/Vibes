@@ -3,6 +3,7 @@
   "private": "true",
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.2.4",
-    "angular-touch": "~1.4.9"
+    "angular-touch": "~1.4.9",
+    "angular-google-maps": "~2.3.1"
   }
 }
