@@ -17,16 +17,17 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
             } else {
                 $scope.currentUser = auth;
                 $scope.loggedIn = true;
-                setEMAs();
+                setEMAs($scope.currentUser.uid);
             }
         });
     };
 
     //iniitalize feed
 
-    var setEMAs = function() {
+    var setEMAs = function(uid) {
         var emaRef = new Firebase("https://thevibe.firebaseio.com/EMAs/");
-        $scope.EMAs = $firebaseArray(emaRef);
+        var query = emaRef.orderByChild("uid").equalTo(uid);
+        $scope.EMAs = $firebaseArray(query);
     }
 
     // default login screen
@@ -39,7 +40,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                 $scope.loggedIn = true;
                 $scope.loginModal.hide();
                 $scope.currentUser = authLogin;
-                setEMAs();
+                setEMAs($scope.currentUser.uid);
             }
             if (errorLogin) {
                 alert(errorLogin);
