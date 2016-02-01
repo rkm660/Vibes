@@ -81,7 +81,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
         $scope.createEMADisabled = true;
         var posOptions = {
             timeout: 10000,
-            enableHighAccuracy: false
+            enableHighAccuracy: true
         };
         $cordovaGeolocation
             .getCurrentPosition(posOptions)
