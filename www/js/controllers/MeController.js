@@ -3,7 +3,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
     var ref = new Firebase("https://thevibe.firebaseio.com/");
     var auth = ref.getAuth();
     $scope.loggedIn = false;
-
+    $scope.createEMADisabled = false;
 
     //init
     var init = function() {
@@ -21,30 +21,6 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
             }
         });
     };
-
-    //broadcast event
-
-    $ionicPlatform.ready(function() {
-        var watchOptions = {
-            timeout: 5000,
-            enableHighAccuracy: false // may cause errors if true
-        };
-
-        var watch = $cordovaGeolocation.watchPosition(watchOptions);
-        watch.then(
-            null,
-            function(err) {
-                // error
-                console.log(err);
-            },
-            function(position) {
-                var lat = position.coords.latitude
-                var long = position.coords.longitude
-                $scope.currentLocation = [lat, long];
-            });
-
-    });
-
 
     //iniitalize feed
 
@@ -101,26 +77,38 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
 
 
     $scope.createEMA = function(EMA) {
-        Utils.getReverseGeo($scope.currentLocation).then(function(res) {
-            console.log(res);
-            $scope.EMAs.$add({
-                thought: EMA.thought,
-                mood: EMA.mood,
-                lat: $scope.currentLocation[0],
-                long: $scope.currentLocation[1],
-                location : res.data.display_name,
-                timestamp: Firebase.ServerValue.TIMESTAMP,
-                uid: $scope.currentUser.uid
-            })
-            $scope.emaModal.hide();
-        });
-
+        $scope.createEMADisabled = true;
+        var posOptions = {
+            timeout: 10000,
+            enableHighAccuracy: false
+        };
+        $cordovaGeolocation
+            .getCurrentPosition(posOptions)
+            .then(function(position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+                Utils.getReverseGeo(lat, lng).then(function(res) {
+                    $scope.EMAs.$add({
+                        thought: EMA.thought,
+                        mood: EMA.mood,
+                        lat: lat,
+                        lng: lng,
+                        location: res.data.display_name,
+                        timestamp: Firebase.ServerValue.TIMESTAMP,
+                        uid: $scope.currentUser.uid
+                    })
+                    $scope.emaModal.hide();
+                    $scope.createEMADisabled = false;
+                });
+            }, function(err) {
+                // error
+            });
 
     };
 
-    $scope.convertCoords = function(lat, long) {
-
-    };
+    $scope.removeEMA = function(EMA){
+        $scope.EMAs.$remove(EMA);
+    }
 
     init();
 });

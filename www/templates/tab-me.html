@@ -1,4 +1,4 @@
-<ion-view view-title="My Thoughts">
+<ion-view view-title="My Vibes">
     <ion-nav-buttons side="secondary">
         <button class="button button-icon ion-compose" ng-click="emaModal.show()">
         </button>
@@ -9,7 +9,7 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list">
-            <a class="item item-icon-left" ng-repeat="EMA in EMAs" href="#">
+            <a ng-swipe-left="removeEMA(EMA)" class="item item-icon-left" ng-repeat="EMA in EMAs" href="#">
                     <i ng-class="EMA.mood >= 5 ? 'icon ion-thumbsup' : 'icon ion-thumbsdown'"></i>"{{EMA.thought}}"
                 <span ng-class="EMA.mood >= 5 ? 'badge badge-balanced' : 'badge badge-assertive'" >{{EMA.mood}}</span>
                 <p>{{EMA.location}}</p>
@@ -33,7 +33,7 @@
                     <span class="input-label">Mood</span>
                     <input ng-model="EMA.mood" type="number">
                 </label>
-                <button class="button button-full button-positive" ng-click="createEMA(EMA)">Create</button>
+                <button ng-disabled="createEMADisabled" class="button button-full button-positive" ng-click="createEMA(EMA)">Create</button>
             </div>
         </ion-content>
     </ion-modal-view>
