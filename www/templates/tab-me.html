@@ -9,9 +9,10 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list">
-            <a ng-swipe-left="removeEMA(EMA)" class="item item-icon-left" ng-repeat="EMA in EMAs" href="#">
-                    <i ng-class="EMA.mood >= 5 ? 'icon ion-thumbsup' : 'icon ion-thumbsdown'"></i>"{{EMA.thought}}"
+            <a ng-swipe-left="removeEMA(EMA)" class="item" ng-repeat="EMA in EMAs" href="#">
                 <span ng-class="EMA.mood >= 5 ? 'badge badge-balanced' : 'badge badge-assertive'" >{{EMA.mood}}</span>
+
+                    <span>"{{EMA.thought}}"</span>
                 <p>{{EMA.location}}</p>
             </a>
         </div>
