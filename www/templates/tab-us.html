@@ -1,9 +1,12 @@
 <ion-view view-title="Northwestern Vibes">
+    <ion-nav-buttons side="primary">
+        <button class="button button-icon ion-log-out" ng-click="logout()">
+        </button>
+    </ion-nav-buttons>
     <ion-content>
         <div id="map" data-tap-disabled="true"></div>
     </ion-content>
 </ion-view>
-
 <script id="templates/login.html" type="text/ng-template">
     <ion-modal-view>
         <ion-header-bar class="bar bar-header bar-positive">

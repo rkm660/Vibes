@@ -17,6 +17,9 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 $scope.currentUser = auth;
                 $scope.loggedIn = true;
                 setEMAs($scope.currentUser.uid);
+                $ionicPlatform.ready(function() {
+                    startWatch();
+                });
             }
         });
     };
@@ -40,6 +43,9 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 $scope.loginModal.hide();
                 $scope.currentUser = authLogin;
                 setEMAs($scope.currentUser.uid);
+                $ionicPlatform.ready(function() {
+                    startWatch();
+                });
             }
             if (errorLogin) {
                 alert(errorLogin);
@@ -50,6 +56,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
     $scope.logout = function() {
         ref.unauth();
         $scope.loggedIn = false;
+        clearWatch($scope.watch.watchID);
         $scope.loginModal.show();
     }
 
@@ -69,18 +76,19 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
 
     var startWatch = function() {
         var watchOptions = {
-            timeout: 3000,
+            frequency: 4000,
+            timeout: 5000,
             enableHighAccuracy: false // may cause errors if true
         };
-        var watch = $cordovaGeolocation.watchPosition(watchOptions);
-        watch.then(
+        $scope.watch = $cordovaGeolocation.watchPosition(watchOptions);
+        $scope.watch.then(
             null,
             function(err) {
                 // error
                 console.log(err);
-                startWatch();
             },
             function(position) {
+                console.log("yup");
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 var mapOptions = {
                     center: latLng,
@@ -89,9 +97,10 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 };
                 $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
                 google.maps.event.addListenerOnce($scope.map, 'idle', function() {
+                    console.log($scope.EMAs);
                     angular.forEach($scope.EMAs, function(value, key) {
                         var coords = new google.maps.LatLng(value.lat, value.lng);
-                        if (value.mood >= 5) {
+                        if (value.mood < 5) {
                             var marker = new google.maps.Marker({
                                 position: coords,
                                 map: $scope.map,
@@ -124,17 +133,24 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                                 infowindow.open($scope.map, marker);
                             });
                         }
-
                     });
                 });
             });
     };
 
-    $ionicPlatform.ready(function() {
-        startWatch();
+    var clearWatch = function(id) {
+        $cordovaGeolocation.clearWatch(id);
+    }
 
-    });
 
+    $scope.$on("$ionicView.beforeLeave", function(event) {
+        clearWatch($scope.watch.watchID);
 
-    init();
+    })
+
+    $scope.$on("$ionicView.beforeEnter", function(event) {
+        console.log($scope.map);
+        console.log($scope.watch);
+        init();
+    })
 });

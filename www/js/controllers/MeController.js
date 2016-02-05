@@ -88,26 +88,23 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
             .then(function(position) {
                 var lat = position.coords.latitude;
                 var lng = position.coords.longitude;
-                Utils.getReverseGeo(lat, lng).then(function(res) {
-                    $scope.EMAs.$add({
-                        thought: EMA.thought,
-                        mood: EMA.mood,
-                        lat: lat,
-                        lng: lng,
-                        location: res.data.display_name,
-                        timestamp: Firebase.ServerValue.TIMESTAMP,
-                        uid: $scope.currentUser.uid
-                    })
-                    $scope.emaModal.hide();
-                    $scope.createEMADisabled = false;
-                });
+                $scope.EMAs.$add({
+                    thought: EMA.thought,
+                    mood: EMA.mood,
+                    lat: lat,
+                    lng: lng,
+                    timestamp: Firebase.ServerValue.TIMESTAMP,
+                    uid: $scope.currentUser.uid
+                })
+                $scope.emaModal.hide();
+                $scope.createEMADisabled = false;
             }, function(err) {
                 // error
             });
 
     };
 
-    $scope.removeEMA = function(EMA){
+    $scope.removeEMA = function(EMA) {
         $scope.EMAs.$remove(EMA);
     }
 
