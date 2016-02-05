@@ -1,12 +1,13 @@
 angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils) {
 
-    var ref = new Firebase("https://thevibe.firebaseio.com/");
-    var auth = ref.getAuth();
-    $scope.loggedIn = false;
-    $scope.createEMADisabled = false;
+    var ref, auth;
 
     //init
     var init = function() {
+        ref = new Firebase("https://thevibe.firebaseio.com/");
+        auth = ref.getAuth();
+        $scope.loggedIn = false;
+        $scope.createEMADisabled = false;
         $ionicModal.fromTemplateUrl('templates/login.html', {
             scope: $scope,
             backdropClickToClose: false
@@ -108,5 +109,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
         $scope.EMAs.$remove(EMA);
     }
 
-    init();
+    $scope.$on("$ionicView.beforeEnter", function(event) {
+        init();
+    })
 });

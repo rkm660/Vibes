@@ -1,11 +1,11 @@
 angular.module('starter').controller('EveryoneController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils) {
 
-    var ref = new Firebase("https://thevibe.firebaseio.com/");
-    var auth = ref.getAuth();
-    $scope.loggedIn = false;
-
+    var ref, auth;
     //init
     var init = function() {
+        ref = new Firebase("https://thevibe.firebaseio.com/");
+        auth = ref.getAuth();
+        $scope.loggedIn = false;
         $ionicModal.fromTemplateUrl('templates/login.html', {
             scope: $scope,
             backdropClickToClose: false
@@ -95,11 +95,14 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                     zoom: 15,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
+
                 $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
                 google.maps.event.addListenerOnce($scope.map, 'idle', function() {
                     console.log($scope.EMAs);
                     angular.forEach($scope.EMAs, function(value, key) {
                         var coords = new google.maps.LatLng(value.lat, value.lng);
+
                         if (value.mood < 5) {
                             var marker = new google.maps.Marker({
                                 position: coords,
@@ -142,15 +145,11 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
         $cordovaGeolocation.clearWatch(id);
     }
 
-
     $scope.$on("$ionicView.beforeLeave", function(event) {
         clearWatch($scope.watch.watchID);
-
     })
 
     $scope.$on("$ionicView.beforeEnter", function(event) {
-        console.log($scope.map);
-        console.log($scope.watch);
         init();
     })
 });
