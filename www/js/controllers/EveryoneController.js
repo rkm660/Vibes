@@ -1,22 +1,71 @@
-angular.module('starter').controller('EveryoneController', function($scope, $cordovaGeolocation, $ionicPlatform, $firebaseArray) {
-    console.log("in EveryoneController");
+angular.module('starter').controller('EveryoneController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils) {
+
     var ref = new Firebase("https://thevibe.firebaseio.com/");
     var auth = ref.getAuth();
     $scope.loggedIn = false;
 
     //init
     var init = function() {
-        if (!auth) {} else {
-            $scope.currentUser = auth;
-            $scope.loggedIn = true;
-            setEMAs();
-        }
+        $ionicModal.fromTemplateUrl('templates/login.html', {
+            scope: $scope,
+            backdropClickToClose: false
+        }).then(function(modal) {
+            $scope.loginModal = modal;
+            if (!auth) {
+                $scope.loginModal.show();
+            } else {
+                $scope.currentUser = auth;
+                $scope.loggedIn = true;
+                setEMAs($scope.currentUser.uid);
+            }
+        });
     };
 
-    var setEMAs = function() {
+    //iniitalize feed
+
+    var setEMAs = function(uid) {
         var emaRef = new Firebase("https://thevibe.firebaseio.com/EMAs/");
-        $scope.EMAs = $firebaseArray(emaRef);
+        var query = emaRef.orderByChild("uid").equalTo(uid);
+        $scope.EMAs = $firebaseArray(query);
     }
+
+    // default login screen
+
+    $scope.login = function(credentials) {
+        UserService.login(credentials).then(function(resLogin) {
+            var errorLogin = resLogin[1];
+            var authLogin = resLogin[0];
+            if (authLogin) {
+                $scope.loggedIn = true;
+                $scope.loginModal.hide();
+                $scope.currentUser = authLogin;
+                setEMAs($scope.currentUser.uid);
+            }
+            if (errorLogin) {
+                alert(errorLogin);
+            }
+        });
+    };
+
+    $scope.logout = function() {
+        ref.unauth();
+        $scope.loggedIn = false;
+        $scope.loginModal.show();
+    }
+
+    $scope.register = function(credentials) {
+        UserService.register(credentials).then(function(resRegister) {
+            var errorRegister = resRegister[1];
+            var authRegister = resRegister[0];
+            console.log(resRegister);
+            if (authRegister) {
+                $scope.login(credentials);
+            }
+            if (errorRegister) {
+                alert(errorRegister);
+            }
+        });
+    };
 
     var startWatch = function() {
         var watchOptions = {
@@ -38,34 +87,41 @@ angular.module('starter').controller('EveryoneController', function($scope, $cor
                     zoom: 15,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
-
                 $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
                 google.maps.event.addListenerOnce($scope.map, 'idle', function() {
-
                     angular.forEach($scope.EMAs, function(value, key) {
                         var coords = new google.maps.LatLng(value.lat, value.lng);
-                        console.log(value.mood);
                         if (value.mood >= 5) {
-                            var cityCircle = new google.maps.Circle({
-                                strokeColor: '#FF0000',
-                                strokeOpacity: 0.2,
-                                strokeWeight: 2,
-                                fillColor: '#FF0000',
-                                fillOpacity: (value.mood-5) / 5,
+                            var marker = new google.maps.Marker({
+                                position: coords,
                                 map: $scope.map,
-                                center: coords,
-                                radius: 20
+                                icon: {
+                                    path: google.maps.SymbolPath.CIRCLE,
+                                    strokeColor: "red",
+                                    scale: 5
+                                },
+                            });
+                            var infowindow = new google.maps.InfoWindow({
+                                content: value.thought,
+                            });
+                            marker.addListener('click', function() {
+                                infowindow.open($scope.map, marker);
                             });
                         } else {
-                            var cityCircle = new google.maps.Circle({
-                                strokeColor: '#00FF00',
-                                strokeOpacity: 0.2,
-                                strokeWeight: 2,
-                                fillColor: '#00FF00',
-                                fillOpacity: 1-(value.mood) / 5,
+                            var marker = new google.maps.Marker({
+                                position: coords,
                                 map: $scope.map,
-                                center: coords,
-                                radius: 20
+                                icon: {
+                                    path: google.maps.SymbolPath.CIRCLE,
+                                    strokeColor: "green",
+                                    scale: 5
+                                },
+                            });
+                            var infowindow = new google.maps.InfoWindow({
+                                content: value.thought,
+                            });
+                            marker.addListener('click', function() {
+                                infowindow.open($scope.map, marker);
                             });
                         }
 
@@ -78,6 +134,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $cor
         startWatch();
 
     });
+
 
     init();
 });
