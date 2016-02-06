@@ -177,7 +177,8 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
             stationaryRadius: 10,
             distanceFilter: 0,
             activityRecognitionInterval: 0,
-            activityType: 'Other'
+            activityType: 'Other',
+            debug: false
 
         });
 
