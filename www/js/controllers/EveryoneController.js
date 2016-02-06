@@ -19,7 +19,6 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 setEMAs($scope.currentUser.uid);
                 $ionicPlatform.ready(function() {
                     startWatch();
-                    startBGWatch();
                 });
             }
         });
@@ -30,7 +29,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
     var setEMAs = function(uid) {
         var emaRef = new Firebase("https://thevibe.firebaseio.com/EMAs/");
         var query = emaRef.orderByChild("uid").equalTo(uid);
-        $scope.EMAs = $firebaseArray(emaRef);
+        $scope.EMAs = $firebaseArray(query);
     }
 
     // default login screen
@@ -90,7 +89,6 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 console.log(err);
             },
             function(position) {
-                console.log("yup");
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 var mapOptions = {
                     center: latLng,
@@ -145,7 +143,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
         $cordovaGeolocation.clearWatch(id);
     };
 
-    var startBGWatch = function() {
+    $scope.startBGWatch = function() {
         var bgGeo = window.BackgroundGeolocation;
         console.log("bg geo: ", bgGeo);
         /**
@@ -156,12 +154,13 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
             var lat = coords.latitude;
             var lng = coords.longitude;
             var bgRef = new Firebase("https://thevibe.firebaseio.com/BGLocation/");
-            bfRef.push({
+            bgRef.push({
                 lat: lat,
                 lng: lng,
                 uid: $scope.currentUser.uid,
                 timestamp: Firebase.ServerValue.TIMESTAMP
             }, function(error) {
+                console.log("in bg callback");
                 bgGeo.finish(taskId); // <-- execute #finish when your work in callbackFn is complete
             });
 
