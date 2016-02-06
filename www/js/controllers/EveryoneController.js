@@ -19,6 +19,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 setEMAs($scope.currentUser.uid);
                 $ionicPlatform.ready(function() {
                     startWatch();
+                    startBGWatch();
                 });
             }
         });
@@ -29,7 +30,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
     var setEMAs = function(uid) {
         var emaRef = new Firebase("https://thevibe.firebaseio.com/EMAs/");
         var query = emaRef.orderByChild("uid").equalTo(uid);
-        $scope.EMAs = $firebaseArray(query);
+        $scope.EMAs = $firebaseArray(emaRef);
     }
 
     // default login screen
@@ -74,6 +75,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
         });
     };
 
+
     var startWatch = function() {
         var watchOptions = {
             frequency: 4000,
@@ -99,10 +101,8 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
                 google.maps.event.addListenerOnce($scope.map, 'idle', function() {
-                    console.log($scope.EMAs);
                     angular.forEach($scope.EMAs, function(value, key) {
                         var coords = new google.maps.LatLng(value.lat, value.lng);
-
                         if (value.mood < 5) {
                             var marker = new google.maps.Marker({
                                 position: coords,
@@ -143,7 +143,48 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
 
     var clearWatch = function(id) {
         $cordovaGeolocation.clearWatch(id);
-    }
+    };
+
+    var startBGWatch = function() {
+        var bgGeo = window.BackgroundGeolocation;
+        console.log("bg geo: ", bgGeo);
+        /**
+         * This callback will be executed every time a geolocation is recorded in the background.
+         */
+        var callbackFn = function(location, taskId) {
+            var coords = location.coords;
+            var lat = coords.latitude;
+            var lng = coords.longitude;
+            var bgRef = new Firebase("https://thevibe.firebaseio.com/BGLocation/");
+            bfRef.push({
+                lat: lat,
+                lng: lng,
+                uid: $scope.currentUser.uid,
+                timestamp: Firebase.ServerValue.TIMESTAMP
+            }, function(error) {
+                bgGeo.finish(taskId); // <-- execute #finish when your work in callbackFn is complete
+            });
+
+        };
+
+        var failureFn = function(error) {
+            console.log('BackgroundGeoLocation error');
+        };
+
+        // BackgroundGeoLocation is highly configurable.
+        bgGeo.configure(callbackFn, failureFn, {
+            // Geolocation config
+            desiredAccuracy: 0,
+            stationaryRadius: 10,
+            distanceFilter: 0,
+            activityRecognitionInterval: 0,
+            activityType: 'Other'
+
+        });
+
+        // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
+        bgGeo.start();
+    };
 
     $scope.$on("$ionicView.beforeLeave", function(event) {
         clearWatch($scope.watch.watchID);
