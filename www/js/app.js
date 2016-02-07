@@ -66,5 +66,5 @@ angular.module('starter', ['ionic', 'firebase', 'ngCordova', 'ngTouch'])
 
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/tab/us');
+    $urlRouterProvider.otherwise('/tab/me');
 });

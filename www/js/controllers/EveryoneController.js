@@ -18,7 +18,14 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 $scope.loggedIn = true;
                 setEMAs($scope.currentUser.uid);
                 $ionicPlatform.ready(function() {
+                    try {
+                        startBGWatch();
+
+                    } catch (err) {
+
+                    }
                     startWatch();
+
                 });
             }
         });
@@ -44,7 +51,14 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 $scope.currentUser = authLogin;
                 setEMAs($scope.currentUser.uid);
                 $ionicPlatform.ready(function() {
+                    try {
+                        startBGWatch();
+
+                    } catch (err) {
+
+                    }
                     startWatch();
+
                 });
             }
             if (errorLogin) {
@@ -143,7 +157,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
         $cordovaGeolocation.clearWatch(id);
     };
 
-    $scope.startBGWatch = function() {
+    var startBGWatch = function() {
         var bgGeo = window.BackgroundGeolocation;
         console.log("bg geo: ", bgGeo);
         /**

@@ -5,6 +5,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
     //init
     var init = function() {
         ref = new Firebase("https://thevibe.firebaseio.com/");
+        
         auth = ref.getAuth();
         $scope.loggedIn = false;
         $scope.createEMADisabled = false;
@@ -21,6 +22,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                 setEMAs($scope.currentUser.uid);
             }
         });
+
     };
 
     //iniitalize feed
