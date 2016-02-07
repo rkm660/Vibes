@@ -17,17 +17,6 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 $scope.currentUser = auth;
                 $scope.loggedIn = true;
                 setEMAs($scope.currentUser.uid);
-                $ionicPlatform.ready(function() {
-                    try {
-                        startBGWatch();
-
-                    } catch (err) {
-                        alert("There was an error with background geolocation, please change location settings and restart the app.");
-                        console.log(err);
-                    }
-                    startWatch();
-
-                });
             }
         });
     };
@@ -59,7 +48,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                         alert("There was an error initializing background Geolocation, please restart the app.");
                         console.log(err);
                     }
-                    startWatch();
+                    $scope.refreshMap();
 
                 });
             }
@@ -72,7 +61,6 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
     $scope.logout = function() {
         ref.unauth();
         $scope.loggedIn = false;
-        clearWatch($scope.watch.watchID);
         $scope.loginModal.show();
     }
 
@@ -91,21 +79,16 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
     };
 
 
-    var startWatch = function() {
-        var watchOptions = {
-            frequency: 10000,
-            timeout: 5000,
-            enableHighAccuracy: false // may cause errors if true
+    $scope.refreshMap = function() {
+        var posOptions = {
+            timeout: 10000,
+            enableHighAccuracy: true
         };
-        $scope.watch = $cordovaGeolocation.watchPosition(watchOptions);
-        $scope.watch.then(
-            null,
-            function(err) {
-                // error
-                console.log(err);
-            },
-            function(position) {
+        $cordovaGeolocation
+            .getCurrentPosition(posOptions)
+            .then(function(position) {
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
                 var mapOptions = {
                     center: latLng,
                     zoom: 15,
@@ -152,11 +135,17 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                         }
                     });
                 });
-            });
-    };
 
-    var clearWatch = function(id) {
-        $cordovaGeolocation.clearWatch(id);
+
+            }, function(err) {
+                // error
+                if (err.code === 1) {
+                    alert("Please enable location on your device.");
+                } else {
+                    alert(err.message);
+                }
+
+            });
     };
 
     var startBGWatch = function() {
@@ -201,11 +190,21 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
         bgGeo.start();
     };
 
-    $scope.$on("$ionicView.beforeLeave", function(event) {
-        clearWatch($scope.watch.watchID);
-    })
-
     $scope.$on("$ionicView.beforeEnter", function(event) {
         init();
+    })
+
+    $scope.$on("$ionicView.loaded", function(event) {
+        $ionicPlatform.ready(function() {
+            try {
+                startBGWatch();
+
+            } catch (err) {
+                alert("There was an error with background geolocation, please change location settings and restart the app.");
+                console.log(err);
+            }
+            $scope.refreshMap();
+
+        });
     })
 });

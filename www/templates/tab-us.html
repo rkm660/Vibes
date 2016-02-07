@@ -3,6 +3,10 @@
         <button class="button button-icon ion-log-out" ng-click="logout()">
         </button>
     </ion-nav-buttons>
+    <ion-nav-buttons side="secondary">
+        <button ng-disabled="refreshDisabled" class="button button-icon ion-refresh" ng-click="refreshMap()">
+        </button>
+    </ion-nav-buttons>
     <ion-content>
         <div id="map" data-tap-disabled="true"></div>
     </ion-content>
