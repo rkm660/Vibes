@@ -9,6 +9,10 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
         auth = ref.getAuth();
         $scope.loggedIn = false;
         $scope.createEMADisabled = false;
+        $scope.EMA = {
+            thought : "",
+            mood : null
+        }
         $ionicModal.fromTemplateUrl('templates/login.html', {
             scope: $scope,
             backdropClickToClose: false
@@ -99,6 +103,10 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                     timestamp: Firebase.ServerValue.TIMESTAMP,
                     uid: $scope.currentUser.uid
                 })
+                $scope.EMA = {
+                    thought : "",
+                    mood : null
+                }
                 $scope.emaModal.hide();
                 $scope.createEMADisabled = false;
             }, function(err) {
