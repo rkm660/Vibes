@@ -22,7 +22,8 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                         startBGWatch();
 
                     } catch (err) {
-
+                        alert("There was an error with background geolocation, please change location settings and restart the app.");
+                        console.log(err);
                     }
                     startWatch();
 
@@ -55,7 +56,8 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                         startBGWatch();
 
                     } catch (err) {
-
+                        alert("There was an error initializing background Geolocation, please restart the app.");
+                        console.log(err);
                     }
                     startWatch();
 
@@ -91,7 +93,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
 
     var startWatch = function() {
         var watchOptions = {
-            frequency: 4000,
+            frequency: 10000,
             timeout: 5000,
             enableHighAccuracy: false // may cause errors if true
         };
@@ -159,7 +161,6 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
 
     var startBGWatch = function() {
         var bgGeo = window.BackgroundGeolocation;
-        console.log("bg geo: ", bgGeo);
         /**
          * This callback will be executed every time a geolocation is recorded in the background.
          */

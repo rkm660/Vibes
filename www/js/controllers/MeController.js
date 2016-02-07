@@ -103,6 +103,14 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                 $scope.createEMADisabled = false;
             }, function(err) {
                 // error
+                if (err.code === 1){
+                    alert("Please enable location on your device.");
+                }
+                else {
+                    alert(err.message);
+                }
+                $scope.createEMADisabled = false;
+
             });
 
     };
