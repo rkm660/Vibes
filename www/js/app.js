@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'firebase', 'ngCordova', 'ngTouch'])
+angular.module('starter', ['ionic', 'firebase', 'ngCordova', 'ngTouch','ionic.service.core', 'ionic.service.push'])
 
 .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -27,7 +27,7 @@ angular.module('starter', ['ionic', 'firebase', 'ngCordova', 'ngTouch'])
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider,$ionicAppProvider) {
 
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
@@ -63,6 +63,12 @@ angular.module('starter', ['ionic', 'firebase', 'ngCordova', 'ngTouch'])
             }
         }
     });
+
+    $ionicAppProvider.identify({
+    app_id: 'e2c37079',
+    api_key: 'ef40f02e18c3b70ed3e92aa1fb37991f16a5c66383dff1ff',
+    dev_push: true
+  });
 
 
     // if none of the above states are matched, use this as the fallback

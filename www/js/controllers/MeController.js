@@ -1,17 +1,17 @@
-angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils) {
+angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, PushService) {
 
     var ref, auth;
 
     //init
     var init = function() {
         ref = new Firebase("https://thevibe.firebaseio.com/");
-        
+
         auth = ref.getAuth();
         $scope.loggedIn = false;
         $scope.createEMADisabled = false;
         $scope.EMA = {
-            thought : "",
-            mood : null
+            thought: "",
+            mood: null
         }
         $ionicModal.fromTemplateUrl('templates/login.html', {
             scope: $scope,
@@ -24,6 +24,10 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                 $scope.currentUser = auth;
                 $scope.loggedIn = true;
                 setEMAs($scope.currentUser.uid);
+                PushService.identifyUser().then(function(user) {
+                    PushService.registerUser();
+
+                });
             }
         });
 
@@ -104,17 +108,16 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                     uid: $scope.currentUser.uid
                 })
                 $scope.EMA = {
-                    thought : "",
-                    mood : null
+                    thought: "",
+                    mood: null
                 }
                 $scope.emaModal.hide();
                 $scope.createEMADisabled = false;
             }, function(err) {
                 // error
-                if (err.code === 1){
+                if (err.code === 1) {
                     alert("Please enable location on your device.");
-                }
-                else {
+                } else {
                     alert(err.message);
                 }
                 $scope.createEMADisabled = false;
@@ -126,6 +129,13 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
     $scope.removeEMA = function(EMA) {
         $scope.EMAs.$remove(EMA);
     }
+
+    $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
+        alert("Successfully registered token " + data.token);
+        console.log('Ionic Push: Got token ', data.token, data.platform);
+        $scope.token = data.token;
+    });
+
 
     $scope.$on("$ionicView.beforeEnter", function(event) {
         init();
