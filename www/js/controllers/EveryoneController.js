@@ -143,6 +143,8 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                         }
 
                         //Create landmarks
+                        var infoWindow = new google.maps.InfoWindow();
+
                         angular.forEach($scope.landmarks, function(landmark) {
                             var center = new google.maps.LatLng(landmark.lat, landmark.lng);
                             var cityCircle = new google.maps.Circle({
@@ -150,20 +152,16 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                                 strokeOpacity: 0.8,
                                 strokeWeight: 2,
                                 fillColor: '#000000',
-                                fillOpacity: 0.35,
+                                fillOpacity: 0.15,
                                 map: $scope.map,
                                 center: center,
                                 radius: landmark.radius
                             });
-                            var infoWindow = new google.maps.InfoWindow({
-                                content: landmark.name
-                            });
-
 
                             cityCircle.addListener('click', function() {
                                 infoWindow.open($scope.map, cityCircle);
                                 infoWindow.setPosition(center);
-
+                                infoWindow.setContent(landmark.name);
                             });
 
                         })
