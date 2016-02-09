@@ -21,13 +21,15 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
             if (!auth) {
                 $scope.loginModal.show();
             } else {
-                $scope.currentUser = auth;
+                $rootScope.currentUser = auth;
                 $scope.loggedIn = true;
-                setEMAs($scope.currentUser.uid);
-                PushService.identifyUser().then(function(user) {
-                    PushService.registerUser();
-
+                setEMAs($rootScope.currentUser.uid);
+                $ionicPlatform.ready(function() {
+                    PushService.identifyUser($rootScope.currentUser.uid).then(function(user) {
+                        PushService.registerUser();
+                    });
                 });
+
             }
         });
 
@@ -50,8 +52,8 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
             if (authLogin) {
                 $scope.loggedIn = true;
                 $scope.loginModal.hide();
-                $scope.currentUser = authLogin;
-                setEMAs($scope.currentUser.uid);
+                $rootScope.currentUser = authLogin;
+                setEMAs($rootScope.currentUser.uid);
             }
             if (errorLogin) {
                 alert(errorLogin);
@@ -105,7 +107,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                     lat: lat,
                     lng: lng,
                     timestamp: Firebase.ServerValue.TIMESTAMP,
-                    uid: $scope.currentUser.uid
+                    uid: $rootScope.currentUser.uid
                 })
                 $scope.EMA = {
                     thought: "",

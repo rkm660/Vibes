@@ -27,6 +27,8 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova
                 BackgroundGeolocation.configurePlugin(window.plugins.backgroundGeoLocation);
             }
         }
+
+        
     });
 })
 

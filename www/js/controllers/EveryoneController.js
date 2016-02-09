@@ -14,9 +14,9 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
             if (!auth) {
                 $scope.loginModal.show();
             } else {
-                $scope.currentUser = auth;
+                $rootScope.currentUser = auth;
                 $scope.loggedIn = true;
-                setEMAs($scope.currentUser.uid);
+                setEMAs($rootScope.currentUser.uid);
             }
         });
     };
@@ -38,8 +38,8 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
             if (authLogin) {
                 $scope.loggedIn = true;
                 $scope.loginModal.hide();
-                $scope.currentUser = authLogin;
-                setEMAs($scope.currentUser.uid);
+                $rootScope.currentUser = authLogin;
+                setEMAs($rootScope.currentUser.uid);
                 $ionicPlatform.ready(function() {
                     try {
                         startBGWatch();
@@ -161,7 +161,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
             bgRef.push({
                 lat: lat,
                 lng: lng,
-                uid: $scope.currentUser.uid,
+                uid: $rootScope.currentUser.uid,
                 timestamp: Firebase.ServerValue.TIMESTAMP
             }, function(error) {
                 console.log("in bg callback");
