@@ -109,7 +109,6 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                     var infoWindow = new google.maps.InfoWindow();
 
                     angular.forEach($scope.EMAs, function(value, key) {
-                        console.log(value, key);
                         var coords = new google.maps.LatLng(value.lat, value.lng);
                         if (value.mood < 5) {
                             var marker = new google.maps.Marker({
@@ -146,13 +145,12 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
 
                     angular.forEach($scope.landmarks, function(landmark) {
                         LandmarkService.averageMood(landmark.name).then(function(mood) {
-                            console.log(landmark.name,mood);
                             var center = new google.maps.LatLng(landmark.lat, landmark.lng);
                             var color;
-                            if (mood == NaN){
+                            if (mood == NaN) {
                                 color = "#000000";
                             }
-                            if (mood < 5){
+                            if (mood < 5) {
                                 color = "#FF0000";
                             }
                             if (mood >= 5) {
@@ -169,13 +167,21 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                                 center: center,
                                 radius: landmark.radius
                             });
+                            var emasLength;
+                            try {
+                                emasLength = Object.keys(landmark.EMAs).length;
+                            } catch (err) {
+                                emasLength = 0;
+
+                            }
                             cityCircle.addListener('click', function() {
                                 infoWindow.open($scope.map, cityCircle);
                                 infoWindow.setPosition(center);
                                 var infoString = "<div class=\"list\">" +
                                     "<a class=\"item\" href=\"#\">" +
                                     "<span>Landmark: " + landmark.name + "</span><br>" +
-                                    "<span>Average Vibe: " + mood + "</span>" +
+                                    "<span>Average Vibe: " + mood + "</span><br>" +
+                                    "<span>Num Responses: " + emasLength + "</span>" +
                                     "</a></div>";
                                 infoWindow.setContent(infoString);
                             });
@@ -244,6 +250,8 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
 
     $scope.$on("$ionicView.beforeEnter", function(event) {
         init();
+        $scope.refreshMap();
+
     })
 
     $scope.$on("$ionicView.loaded", function(event) {
@@ -255,7 +263,6 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 alert("There was an error with background geolocation, please change location settings and restart the app.");
                 console.log(err);
             }
-            $scope.refreshMap();
 
         });
     })

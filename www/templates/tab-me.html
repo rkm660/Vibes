@@ -12,6 +12,7 @@
             <a ng-swipe-left="removeEMA(EMA)" class="item" ng-repeat="EMA in EMAs" href="#">
                 <span ng-class="EMA.mood >= 5 ? 'badge badge-balanced' : 'badge badge-assertive'" >{{EMA.mood}}</span>
                     <span>"{{EMA.thought}}"</span>
+
             </a>
         </div>
     </ion-content>

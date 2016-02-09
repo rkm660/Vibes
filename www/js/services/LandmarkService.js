@@ -73,6 +73,9 @@ angular.module('starter').service('LandmarkService', function($q, $firebaseArray
                 }
 
                 mood /= data.length;
+                if (isNaN(mood)) {
+                    mood = "N/A";
+                }
                 deferred.resolve(mood);
             });
         });
@@ -80,7 +83,6 @@ angular.module('starter').service('LandmarkService', function($q, $firebaseArray
     }
 
     self.removeEMA = function(landmarkID, emaID) {
-        console.log(landmarkID, emaID);
         var url = "https://thevibe.firebaseio.com/Landmarks/" + landmarkID + "/EMAs";
         var landmarkEMARef = new Firebase(url);
         var landmarkEMAs = $firebaseArray(landmarkEMARef);
