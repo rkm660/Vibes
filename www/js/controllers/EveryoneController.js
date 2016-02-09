@@ -106,6 +106,8 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
                 google.maps.event.addListenerOnce($scope.map, 'idle', function() {
+                    var infoWindow = new google.maps.InfoWindow();
+
                     angular.forEach($scope.EMAs, function(value, key) {
                         var coords = new google.maps.LatLng(value.lat, value.lng);
                         if (value.mood < 5) {
@@ -118,11 +120,9 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                                     scale: 5
                                 },
                             });
-                            var infowindow = new google.maps.InfoWindow({
-                                content: value.thought,
-                            });
+                           
                             marker.addListener('click', function() {
-                                infowindow.open($scope.map, marker);
+                                infoWindow.open($scope.map, marker);
                             });
                         } else {
                             var marker = new google.maps.Marker({
@@ -134,16 +134,13 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                                     scale: 5
                                 },
                             });
-                            var infowindow = new google.maps.InfoWindow({
-                                content: value.thought,
-                            });
                             marker.addListener('click', function() {
-                                infowindow.open($scope.map, marker);
+                                infoWindow.open($scope.map, marker);
+                                infoWindow.setContent(value.thought);
                             });
                         }
 
                         //Create landmarks
-                        var infoWindow = new google.maps.InfoWindow();
 
                         angular.forEach($scope.landmarks, function(landmark) {
                             var center = new google.maps.LatLng(landmark.lat, landmark.lng);
