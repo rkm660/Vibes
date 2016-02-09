@@ -17,6 +17,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 $rootScope.currentUser = auth;
                 $scope.loggedIn = true;
                 setEMAs($rootScope.currentUser.uid);
+                setLocations();
             }
         });
     };
@@ -29,6 +30,12 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
         $scope.EMAs = $firebaseArray(query);
     }
 
+    var setLocations = function() {
+        var locRef = new Firebase("https://thevibe.firebaseio.com/Landmarks/");
+        $scope.landmarks = $firebaseArray(locRef);
+
+    };
+
     // default login screen
 
     $scope.login = function(credentials) {
@@ -40,6 +47,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 $scope.loginModal.hide();
                 $rootScope.currentUser = authLogin;
                 setEMAs($rootScope.currentUser.uid);
+                setLocations();
                 $ionicPlatform.ready(function() {
                     try {
                         startBGWatch();
@@ -133,6 +141,35 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                                 infowindow.open($scope.map, marker);
                             });
                         }
+
+                        //Create landmarks
+                        angular.forEach($scope.landmarks, function(landmark) {
+                            var center = new google.maps.LatLng(landmark.lat, landmark.lng);
+                            var cityCircle = new google.maps.Circle({
+                                strokeColor: '#000000',
+                                strokeOpacity: 0.8,
+                                strokeWeight: 2,
+                                fillColor: '#000000',
+                                fillOpacity: 0.35,
+                                map: $scope.map,
+                                center: center,
+                                radius: landmark.radius
+                            });
+                            var infoWindow = new google.maps.InfoWindow({
+                                content: landmark.name
+                            });
+
+
+                            cityCircle.addListener('click', function() {
+                                infoWindow.open($scope.map, cityCircle);
+                                infoWindow.setPosition(center);
+
+                            });
+
+                        })
+
+
+
                     });
                 });
 
