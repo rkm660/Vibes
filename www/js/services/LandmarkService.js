@@ -52,7 +52,7 @@ angular.module('starter').service('LandmarkService', function($q, $firebaseArray
         emasRef.once("value", function(EMAs) {
             var EMAs = landmark.EMAs;
             for (var i in EMAs) {
-                var emaRef = new Firebase("https://thevibe.firebaseio.com/EMAs/" + EMAs[i].id);
+                var emaRef = new Firebase("https://thevibe.firebaseio.com/EMAs/" + EMAs[i].emaID);
                 emaRef.once("value", function(ema) {
                     data.push(ema.val());
                 });
@@ -71,6 +71,7 @@ angular.module('starter').service('LandmarkService', function($q, $firebaseArray
                 for (i in data) {
                     mood += data[i].mood
                 }
+
                 mood /= data.length;
                 deferred.resolve(mood);
             });

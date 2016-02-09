@@ -145,8 +145,8 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                     //Create landmarks
 
                     angular.forEach($scope.landmarks, function(landmark) {
-
                         LandmarkService.averageMood(landmark.name).then(function(mood) {
+                            console.log(landmark.name,mood);
                             var center = new google.maps.LatLng(landmark.lat, landmark.lng);
                             var color;
                             if (mood == NaN){
