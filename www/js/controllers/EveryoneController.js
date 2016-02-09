@@ -1,4 +1,4 @@
-angular.module('starter').controller('EveryoneController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils) {
+angular.module('starter').controller('EveryoneController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService) {
 
     var ref, auth;
     //init
@@ -17,7 +17,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 $rootScope.currentUser = auth;
                 $scope.loggedIn = true;
                 setEMAs($rootScope.currentUser.uid);
-                setLocations();
+                setLandmarks();
             }
         });
     };
@@ -30,7 +30,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
         $scope.EMAs = $firebaseArray(query);
     }
 
-    var setLocations = function() {
+    var setLandmarks = function() {
         var locRef = new Firebase("https://thevibe.firebaseio.com/Landmarks/");
         $scope.landmarks = $firebaseArray(locRef);
 
@@ -47,7 +47,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                 $scope.loginModal.hide();
                 $rootScope.currentUser = authLogin;
                 setEMAs($rootScope.currentUser.uid);
-                setLocations();
+                setLandmarks();
                 $ionicPlatform.ready(function() {
                     try {
                         startBGWatch();
@@ -109,6 +109,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                     var infoWindow = new google.maps.InfoWindow();
 
                     angular.forEach($scope.EMAs, function(value, key) {
+                        console.log(value, key);
                         var coords = new google.maps.LatLng(value.lat, value.lng);
                         if (value.mood < 5) {
                             var marker = new google.maps.Marker({
@@ -120,7 +121,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                                     scale: 5
                                 },
                             });
-                           
+
                             marker.addListener('click', function() {
                                 infoWindow.open($scope.map, marker);
                             });
@@ -139,33 +140,52 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                                 infoWindow.setContent(value.thought);
                             });
                         }
+                    });
 
-                        //Create landmarks
+                    //Create landmarks
 
-                        angular.forEach($scope.landmarks, function(landmark) {
+                    angular.forEach($scope.landmarks, function(landmark) {
+
+                        LandmarkService.averageMood(landmark.name).then(function(mood) {
                             var center = new google.maps.LatLng(landmark.lat, landmark.lng);
+                            var color;
+                            if (mood == NaN){
+                                color = "#000000";
+                            }
+                            if (mood < 5){
+                                color = "#FF0000";
+                            }
+                            if (mood >= 5) {
+                                color = "#00FF00";
+                            }
+
                             var cityCircle = new google.maps.Circle({
-                                strokeColor: '#000000',
+                                strokeColor: color,
                                 strokeOpacity: 0.8,
                                 strokeWeight: 2,
-                                fillColor: '#000000',
+                                fillColor: color,
                                 fillOpacity: 0.15,
                                 map: $scope.map,
                                 center: center,
                                 radius: landmark.radius
                             });
-
                             cityCircle.addListener('click', function() {
                                 infoWindow.open($scope.map, cityCircle);
                                 infoWindow.setPosition(center);
-                                infoWindow.setContent(landmark.name);
+                                var infoString = "<div class=\"list\">" +
+                                    "<a class=\"item\" href=\"#\">" +
+                                    "<span>Landmark: " + landmark.name + "</span><br>" +
+                                    "<span>Average Vibe: " + mood + "</span>" +
+                                    "</a></div>";
+                                infoWindow.setContent(infoString);
                             });
-
-                        })
-
+                        });
 
 
                     });
+
+
+
                 });
 
 

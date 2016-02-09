@@ -1,4 +1,4 @@
-angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, PushService) {
+angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, PushService, LandmarkService) {
 
     var ref, auth;
 
@@ -10,7 +10,8 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
         $scope.createEMADisabled = false;
         $scope.EMA = {
             thought: "",
-            mood: null
+            mood: null,
+            landmark: null
         }
         $ionicModal.fromTemplateUrl('templates/login.html', {
             scope: $scope,
@@ -23,6 +24,8 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                 $rootScope.currentUser = auth;
                 $scope.loggedIn = true;
                 setEMAs($rootScope.currentUser.uid);
+                setLandmarks();
+
                 $ionicPlatform.ready(function() {
                     PushService.identifyUser($rootScope.currentUser.uid).then(function(user) {
                         PushService.registerUser();
@@ -40,7 +43,17 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
         var emaRef = new Firebase("https://thevibe.firebaseio.com/EMAs/");
         var query = emaRef.orderByChild("uid").equalTo(uid);
         $scope.EMAs = $firebaseArray(query);
+
+
     }
+
+    //iniitalize landmarks 
+
+    var setLandmarks = function() {
+        var locRef = new Firebase("https://thevibe.firebaseio.com/Landmarks/");
+        $scope.landmarks = $firebaseArray(locRef);
+
+    };
 
     // default login screen
 
@@ -53,6 +66,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                 $scope.loginModal.hide();
                 $rootScope.currentUser = authLogin;
                 setEMAs($rootScope.currentUser.uid);
+                setLandmarks();
             }
             if (errorLogin) {
                 alert(errorLogin);
@@ -106,11 +120,19 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                     lat: lat,
                     lng: lng,
                     timestamp: Firebase.ServerValue.TIMESTAMP,
+                    landmarkID: EMA.landmark,
                     uid: $rootScope.currentUser.uid
-                })
+                }).then(function(ref) {
+                    var landmarkEMAsRef = new Firebase("https://thevibe.firebaseio.com/Landmarks/" + EMA.landmark + "/EMAs")
+                    landmarkEMAsRef.push({
+                        emaID: ref.key()
+                    });
+                });
+
                 $scope.EMA = {
                     thought: "",
-                    mood: null
+                    mood: null,
+                    landmark: null
                 }
                 $scope.emaModal.hide();
                 $scope.createEMADisabled = false;
@@ -129,6 +151,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
 
     $scope.removeEMA = function(EMA) {
         $scope.EMAs.$remove(EMA);
+        LandmarkService.removeEMA(EMA.landmarkID, EMA.$id);
     }
 
     $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
