@@ -9,7 +9,7 @@ angular.module('starter').service('LandmarkService', function($q, $firebaseArray
                 var key = l.key();
                 var landmark = l.val();
                 if (landmark.name === name) {
-                    deferred.resolve(landmark);
+                    deferred.resolve(key);
                 }
             });
         });
@@ -22,6 +22,7 @@ angular.module('starter').service('LandmarkService', function($q, $firebaseArray
         ref.once("value", function(landmarks) {
             landmarks.forEach(function(l) {
                 var key = l.key();
+                var landmark = l.val();
                 if (key == ID) {
                     deferred.resolve(landmark);
                 }
@@ -30,7 +31,7 @@ angular.module('starter').service('LandmarkService', function($q, $firebaseArray
         return deferred.promise;
     };
 
-    var getID = function(name) {
+    self.getID = function(name) {
         var ref = new Firebase("https://thevibe.firebaseio.com/Landmarks");
         var deferred = $q.defer();
         ref.once("value", function(landmarks) {
@@ -49,13 +50,12 @@ angular.module('starter').service('LandmarkService', function($q, $firebaseArray
         var deferred = $q.defer();
         var data = [];
         var emasRef = new Firebase("https://thevibe.firebaseio.com/EMAs");
-        emasRef.once("value", function(EMAs) {
-            var EMAs = landmark.EMAs;
-            for (var i in EMAs) {
-                var emaRef = new Firebase("https://thevibe.firebaseio.com/EMAs/" + EMAs[i].emaID);
-                emaRef.once("value", function(ema) {
-                    data.push(ema.val());
-                });
+        emasRef.once("value", function(e) {
+            var EMAs = e.val();
+            for (i in EMAs) {
+                if (EMAs[i].landmarkID == landmark) {
+                    data.push(EMAs[i]);
+                }
             }
             deferred.resolve(data);
         });
@@ -63,11 +63,11 @@ angular.module('starter').service('LandmarkService', function($q, $firebaseArray
     };
 
 
-    self.averageMood = function(name) {
+    self.landmarkData = function(name) {
         var deferred = $q.defer();
         var mood = 0;
-        self.getLandmarkByName(name).then(function(landmark) {
-            getEMAData(landmark).then(function(data) {
+        self.getLandmarkByName(name).then(function(l) {
+            getEMAData(l).then(function(data) {
                 for (i in data) {
                     mood += data[i].mood
                 }
@@ -76,26 +76,12 @@ angular.module('starter').service('LandmarkService', function($q, $firebaseArray
                 if (isNaN(mood)) {
                     mood = "N/A";
                 }
-                deferred.resolve(mood);
+                deferred.resolve([mood,data.length]);
             });
         });
         return deferred.promise;
     }
 
-    self.removeEMA = function(landmarkID, emaID) {
-        var url = "https://thevibe.firebaseio.com/Landmarks/" + landmarkID + "/EMAs";
-        var landmarkEMARef = new Firebase(url);
-        var landmarkEMAs = $firebaseArray(landmarkEMARef);
-        landmarkEMAs.$loaded().then(function(emas) {
-            angular.forEach(landmarkEMAs, function(e) {
-                if (e.emaID == emaID) {
-                    var record = landmarkEMAs.$getRecord(e.$id);
-                    landmarkEMAs.$remove(record);
-                }
-            })
 
-            landmarkEMAs.$remove();
-        });
-    }
 
 });

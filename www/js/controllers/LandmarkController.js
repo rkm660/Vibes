@@ -1,4 +1,4 @@
-angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, PushService, LandmarkService) {
+angular.module('starter').controller('LandmarkController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, PushService, LandmarkService, $stateParams, $location) {
 
     var ref, auth;
 
@@ -23,15 +23,15 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
             } else {
                 $rootScope.currentUser = auth;
                 $scope.loggedIn = true;
-                setEMAs($rootScope.currentUser.uid);
+                setEMAs($stateParams.landmarkID);
                 setLandmarks();
-
-                $ionicPlatform.ready(function() {
-                    PushService.identifyUser($rootScope.currentUser.uid).then(function(user) {
-                        PushService.registerUser();
-                    });
+                LandmarkService.getLandmarkByID($stateParams.landmarkID).then(function(landmark) {
+                    setTimeout(function() {
+                        $scope.$apply(function() {
+                            $scope.landmark = landmark;
+                        })
+                    }, 1000);
                 });
-
             }
         });
 
@@ -39,12 +39,10 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
 
     //iniitalize feed
 
-    var setEMAs = function(uid) {
+    var setEMAs = function(landmarkID) {
         var emaRef = new Firebase("https://thevibe.firebaseio.com/EMAs/");
-        var query = emaRef.orderByChild("uid").equalTo(uid);
+        var query = emaRef.orderByChild("landmarkID").equalTo(landmarkID);
         $scope.EMAs = $firebaseArray(query);
-
-
     }
 
     //iniitalize landmarks 
@@ -65,7 +63,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                 $scope.loggedIn = true;
                 $scope.loginModal.hide();
                 $rootScope.currentUser = authLogin;
-                setEMAs($rootScope.currentUser.uid);
+                setEMAs($stateParams.landmarkID);
                 setLandmarks();
             }
             if (errorLogin) {
@@ -74,11 +72,6 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
         });
     };
 
-    $scope.logout = function() {
-        ref.unauth();
-        $scope.loggedIn = false;
-        $scope.loginModal.show();
-    }
 
     $scope.register = function(credentials) {
         UserService.register(credentials).then(function(resRegister) {
@@ -123,7 +116,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                     landmarkID: EMA.landmark,
                     uid: $rootScope.currentUser.uid
                 }).then(function(ref) {
-                  
+
                 });
 
                 $scope.EMA = {
@@ -149,12 +142,6 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
     $scope.removeEMA = function(EMA) {
         $scope.EMAs.$remove(EMA);
     }
-
-    $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
-        console.log('Ionic Push: Got token ', data.token, data.platform);
-        $scope.token = data.token;
-    });
-
 
     $scope.$on("$ionicView.beforeEnter", function(event) {
         init();

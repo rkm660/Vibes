@@ -28,11 +28,11 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova
             }
         }
 
-        
+
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicAppProvider ) {
+.config(function($stateProvider, $urlRouterProvider, $ionicAppProvider) {
 
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
@@ -60,14 +60,23 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova
     })
 
     .state('tab.us', {
-        url: '/us',
-        views: {
-            'tab-us': {
-                templateUrl: 'templates/tab-us.html',
-                controller: 'EveryoneController'
+            url: '/us',
+            views: {
+                'tab-us': {
+                    templateUrl: 'templates/tab-us.html',
+                    controller: 'EveryoneController'
+                }
             }
-        }
-    });
+        })
+        .state('tab.landmark-detail', {
+            url: '/us/:landmarkID',
+            views: {
+                'tab-us': {
+                    templateUrl: 'templates/landmark.html',
+                    controller: 'LandmarkController'
+                }
+            }
+        });
 
     $ionicAppProvider.identify({
         app_id: 'e2c37079',

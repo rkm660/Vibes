@@ -1,5 +1,6 @@
 angular.module('starter').service('PushService', function($q, $ionicUser, $ionicPush) {
     var self = this;
+    
     self.identifyUser = function(uid) {
         var deferred = $q.defer();
         var user = $ionicUser.get();

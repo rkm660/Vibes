@@ -1,4 +1,4 @@
-angular.module('starter').controller('EveryoneController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService) {
+angular.module('starter').controller('EveryoneController', function($scope, $compile, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService, $window) {
 
     var ref, auth;
     //init
@@ -144,9 +144,11 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                     //Create landmarks
 
                     angular.forEach($scope.landmarks, function(landmark) {
-                        LandmarkService.averageMood(landmark.name).then(function(mood) {
+                        LandmarkService.landmarkData(landmark.name).then(function(data) {
                             var center = new google.maps.LatLng(landmark.lat, landmark.lng);
-                            var color;
+                            var color, mood, length;
+                            mood = data[0];
+                            emasLength = data[1];
                             if (mood == NaN) {
                                 color = "#000000";
                             }
@@ -167,23 +169,18 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
                                 center: center,
                                 radius: landmark.radius
                             });
-                            var emasLength;
-                            try {
-                                emasLength = Object.keys(landmark.EMAs).length;
-                            } catch (err) {
-                                emasLength = 0;
-
-                            }
+                            
+                            var infoString = "<div class=\"list\">" +
+                                "<a class=\"item\" ng-click=\"goToDetail('"+landmark.$id+"')\">" +
+                                "<span>Landmark: " + landmark.name + "</span><br>" +
+                                "<span>Average Vibe: " + mood + "</span><br>" +
+                                "<span>Num Responses: " + emasLength + "</span>" +
+                                "</a></div>";
+                            var compiled = $compile(infoString)($scope)
                             cityCircle.addListener('click', function() {
                                 infoWindow.open($scope.map, cityCircle);
                                 infoWindow.setPosition(center);
-                                var infoString = "<div class=\"list\">" +
-                                    "<a class=\"item\" href=\"#\">" +
-                                    "<span>Landmark: " + landmark.name + "</span><br>" +
-                                    "<span>Average Vibe: " + mood + "</span><br>" +
-                                    "<span>Num Responses: " + emasLength + "</span>" +
-                                    "</a></div>";
-                                infoWindow.setContent(infoString);
+                                infoWindow.setContent(compiled[0]);
                             });
                         });
 
@@ -205,6 +202,11 @@ angular.module('starter').controller('EveryoneController', function($scope, $roo
 
             });
     };
+
+    $scope.goToDetail = function(id){
+        console.log(id);
+        $window.location.assign('/#/tab/us/'+id);
+    }
 
     var startBGWatch = function() {
         var bgGeo = window.BackgroundGeolocation;
