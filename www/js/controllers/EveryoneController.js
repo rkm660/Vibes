@@ -205,7 +205,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $com
 
     $scope.goToDetail = function(id){
         console.log(id);
-        $window.location.assign('/#/tab/us/'+id);
+        $window.location.assign('#/tab/us/'+id);
     }
 
     var startBGWatch = function() {
