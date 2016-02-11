@@ -16,7 +16,7 @@
 <script id="templates/createEMA.html" type="text/ng-template">
     <ion-modal-view>
         <ion-header-bar class="bar bar-header bar-positive">
-            <h1 class="title">New EMA</h1>
+            <h1 class="title">New {{landmark.name}} EMA</h1>
             <button class="button button-clear button-primary" ng-click="emaModal.hide()">Cancel</button>
         </ion-header-bar>
         <ion-content class="padding">
@@ -28,14 +28,6 @@
                 <label class="item item-input">
                     <span class="input-label">Mood</span>
                     <input ng-model="EMA.mood" type="number">
-                </label>
-                <label class="item item-input item-select">
-                    <div class="input-label">
-                        Share with landmark?
-                    </div>
-                    <select ng-model="EMA.landmark">
-                        <option ng-value="landmark.$id" ng-repeat="landmark in landmarks">{{landmark.name}}</option>
-                    </select>
                 </label>
                 <button ng-disabled="createEMADisabled" class="button button-full button-positive" ng-click="createEMA(EMA)">Create</button>
             </div>

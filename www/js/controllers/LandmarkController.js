@@ -11,7 +11,7 @@ angular.module('starter').controller('LandmarkController', function($scope, $roo
         $scope.EMA = {
             thought: "",
             mood: null,
-            landmark: null
+            landmark: $stateParams.landmarkID
         }
         $ionicModal.fromTemplateUrl('templates/login.html', {
             scope: $scope,
