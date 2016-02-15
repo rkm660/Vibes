@@ -9,8 +9,15 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list">
-            <a ng-swipe-left="removeEMA(EMA)" class="item" ng-repeat="EMA in EMAs" href="#">
-                <span ng-class="EMA.mood >= 3 ? 'badge badge-balanced' : 'badge badge-assertive'" >{{EMA.mood}}</span>
+            <a ng-swipe-left="removeEMA(EMA)" class="item item-avatar" ng-repeat="EMA in EMAs" href="#">
+                <span ng-class="EMA.mood > 3 ? 'badge badge-balanced' : 'badge badge-assertive'" 
+                 ng-switch on="EMA.mood" >
+                <img src="img/crying1.png"  ng-switch-when=1 height="42" width="42"/>
+               <img src="img/crying2.png"  ng-switch-when=2 height="42" width="42"/>
+               <img ng-switch-when=3 src="img/neutral.png" height="42" width="42" />
+               <img ng-switch-when=4 src="img/smile4.png" height="42" width="42"/>
+               <img ng-switch-when=5 src="img/smile5.png" height="42" width="42" />
+             </span>
                     <span>"{{EMA.thought}}"</span>
             </a>
         </div>
