@@ -10,7 +10,7 @@
     <ion-content>
         <div class="list">
             <a ng-swipe-left="removeEMA(EMA)" class="item" ng-repeat="EMA in EMAs" href="#">
-                <span ng-class="EMA.mood >= 5 ? 'badge badge-balanced' : 'badge badge-assertive'" >{{EMA.mood}}</span>
+                <span ng-class="EMA.mood >= 3 ? 'badge badge-balanced' : 'badge badge-assertive'" >{{EMA.mood}}</span>
                     <span>"{{EMA.thought}}"</span>
             </a>
         </div>
@@ -27,8 +27,8 @@
 <div class="item item-divider">
 Hows your mood right now?
 <div class="row">
-<div class="col" ng-repeat="emoji in moodID track by $index">
-<img ng-src="{{getURL(emoji)}}" ng-click="setEmojiValue(emoji)" style="cursor:pointer" >
+<div class="col" ng-repeat="mood in moods">
+<img ng-src="{{mood.url}}" ng-click="setEmojiValue(mood.id)" style="cursor:pointer" >
 </div>
 </div>
    
