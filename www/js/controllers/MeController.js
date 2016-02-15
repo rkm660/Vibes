@@ -1,8 +1,8 @@
 angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, PushService, LandmarkService) {
 
-    var ref, auth;
+    var ref, auth, mood;
     $scope.moodID = [1,2,3,4,5];
-
+    
 
     //init
     var init = function() {
@@ -48,6 +48,15 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
 
 
     }
+
+    $scope.setEmojiValue = function(emojiID)
+        {         
+       
+            $scope.EMA.mood = emojiID;
+           
+
+        };
+    
 
     //iniitalize landmarks 
 
@@ -186,6 +195,8 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
             return url;
 
         };
+
+
 
     $scope.$on("$ionicView.beforeEnter", function(event) {
         init();

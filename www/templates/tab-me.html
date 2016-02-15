@@ -28,7 +28,7 @@
 Hows your mood right now?
 <div class="row">
 <div class="col" ng-repeat="emoji in moodID track by $index">
-<img ng-src="{{getURL(emoji)}}" >
+<img ng-src="{{getURL(emoji)}}" ng-click="setEmojiValue(emoji)" style="cursor:pointer" >
 </div>
 </div>
    
