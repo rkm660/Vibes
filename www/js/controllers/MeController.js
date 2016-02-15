@@ -1,6 +1,8 @@
 angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, PushService, LandmarkService) {
 
     var ref, auth;
+    $scope.moodID = [1,2,3,4,5];
+
 
     //init
     var init = function() {
@@ -155,6 +157,35 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
         $scope.token = data.token;
     });
 
+//in switch-case for now
+    $scope.getURL = function(emojiID)
+        {
+          
+            var url;
+            switch(emojiID) {
+                case 1:
+                    url = "img/crying1.png";
+                    break;
+                case 2:
+                    url = "img/crying2.png";
+                    break;
+                case 3:
+                    url = "img/neutral.png";
+                    break;
+                case 4:
+                    url = "img/smile4.png";
+                    break;
+                case 5:
+                    url = "img/smile5.png";
+                    break;
+                default:
+                    url = "img/happy.png";
+
+            }
+
+            return url;
+
+        };
 
     $scope.$on("$ionicView.beforeEnter", function(event) {
         init();

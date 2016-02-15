@@ -10,4 +10,8 @@
     "angular-websocket": "~1.0.14",
     "ionic-platform-web-client": "~0.2.1"
   }
+  "dependencies": {
+    "bootstrap": "3.x.x"
+    
+  }
 }
