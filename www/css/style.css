@@ -21,6 +21,10 @@ img {
 	cursor: default;
 }
 
+.emaList{
+	float:right;
+}
+
 .smileySelected {
     background-color: #ffe866;
     box-shadow: 0px 0px 50px #fff;
@@ -30,6 +34,22 @@ img {
 	cursor: default;
 }
 
+.redSmiley {
+    background-color: red;
+    box-shadow: 0px 0px 50px #fff;
+  	border-radius: 55%;
+	overflow: hidden;
+	position: relative;
+	cursor: default;
+}
+.greenSmiley {
+    background-color: green;
+    box-shadow: 0px 0px 50px #fff;
+  	border-radius: 55%;
+	overflow: hidden;
+	position: relative;
+	cursor: default;
+}
 
 
 
