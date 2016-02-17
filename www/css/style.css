@@ -8,3 +8,30 @@
     height: 100%;
 }
 
+img {
+  cursor: pointer;
+}
+
+.smiley:hover {
+    background-color: #ffa;
+    box-shadow: 0px 0px 50px #fff;
+  	border-radius: 55%;
+	overflow: hidden;
+	position: relative;
+	cursor: default;
+}
+
+.smileySelected {
+    background-color: #ffe866;
+    box-shadow: 0px 0px 50px #fff;
+  	border-radius: 55%;
+	overflow: hidden;
+	position: relative;
+	cursor: default;
+}
+
+
+
+
+
+

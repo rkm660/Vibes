@@ -27,10 +27,14 @@
         <ion-content class="padding">
 <div class="card">
 <div class="item item-divider">
+ <div>
+    </div>
 Hows your mood right now?
 <div class="row">
-<div class="col" ng-repeat="mood in moods">
-<img ng-src="{{mood.url}}" ng-click="setEmojiValue(mood.id)" style="cursor:pointer" >
+<div class="col">
+<span ng-repeat="mood in moods" >
+<img ng-class="{ 'smileySelected': $index == selectedIndex, 'smiley':$index != selectedIndex }" ng-src="{{mood.url}}" ng-click="setEmojiValue(mood.id,$index)" >
+</span>
 </div>
 </div>
    
