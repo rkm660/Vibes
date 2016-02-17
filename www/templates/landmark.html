@@ -22,15 +22,20 @@
             <button class="button button-clear button-primary" ng-click="emaModal.hide()">Cancel</button>
         </ion-header-bar>
         <ion-content class="padding">
-            <div class="list">
+            <div class="card">
             <div class="item item-divider">
+            <div>
+    </div>
             Hows your mood right now?
             <div class="row">
-            <div class="col" ng-repeat="mood in moods">
-            <img ng-src="{{mood.url}}" ng-click="setEmojiValue(mood.id)" style="cursor:pointer" >
+            <div class="col">
+            <span ng-repeat="mood in moods" >
+            <img ng-class="{ 'smileySelected': $index == selectedIndex, 'smiley':$index != selectedIndex }" ng-src="{{mood.url}}" ng-click="setEmojiValue(mood.id,$index)" >
+            </span>
             </div>
             </div>
             </div>
+
                 <label class="item item-input">
                     <span class="input-label">Thought</span>
                     <input ng-model="EMA.thought" type="text">
