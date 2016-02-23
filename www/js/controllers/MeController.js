@@ -1,4 +1,4 @@
-angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, PushService, LandmarkService) {
+angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, Utils, LandmarkService) {
 
     var ref, auth;
 
@@ -25,13 +25,6 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                 $scope.loggedIn = true;
                 setEMAs($rootScope.currentUser.uid);
                 setLandmarks();
-
-                $ionicPlatform.ready(function() {
-                    PushService.identifyUser($rootScope.currentUser.uid).then(function(user) {
-                        PushService.registerUser();
-                    });
-                });
-
             }
         });
 
@@ -149,11 +142,6 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
     $scope.removeEMA = function(EMA) {
         $scope.EMAs.$remove(EMA);
     }
-
-    $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
-        console.log('Ionic Push: Got token ', data.token, data.platform);
-        $scope.token = data.token;
-    });
 
 
     $scope.$on("$ionicView.beforeEnter", function(event) {

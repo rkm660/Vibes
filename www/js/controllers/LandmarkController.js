@@ -1,4 +1,4 @@
-angular.module('starter').controller('LandmarkController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, PushService, LandmarkService, $stateParams, $location) {
+angular.module('starter').controller('LandmarkController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService, $stateParams, $location) {
 
     var ref, auth;
 

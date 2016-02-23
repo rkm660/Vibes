@@ -5,14 +5,12 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch', 'ionic.service.push', 'ionic.service.analytics'])
+angular.module('starter', ['ionic',  'firebase', 'ngCordova', 'ngTouch'])
 
-.run(function($ionicPlatform, $ionicAnalytics) {
+.run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
-        $ionicAnalytics.register();
-
 
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -32,7 +30,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicAppProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
 
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
@@ -77,13 +75,6 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova
                 }
             }
         });
-
-    $ionicAppProvider.identify({
-        app_id: 'e2c37079',
-        api_key: 'ef40f02e18c3b70ed3e92aa1fb37991f16a5c66383dff1ff',
-        dev_push: true
-    });
-
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/me');
