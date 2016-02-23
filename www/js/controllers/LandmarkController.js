@@ -29,6 +29,7 @@ angular.module('starter').controller('LandmarkController', function($scope, $roo
                     setTimeout(function() {
                         $scope.$apply(function() {
                             $scope.landmark = landmark;
+                            console.log($scope.landmark);
                         })
                     }, 1000);
                 });
@@ -140,7 +141,12 @@ angular.module('starter').controller('LandmarkController', function($scope, $roo
     };
 
     $scope.removeEMA = function(EMA) {
-        $scope.EMAs.$remove(EMA);
+        if (EMA.uid == $rootScope.currentUser.uid){
+            $scope.EMAs.$remove(EMA);
+        }
+        else {
+            alert("Sorry, you don't have permission to delete this.");
+        }
     }
 
     $scope.$on("$ionicView.beforeEnter", function(event) {
