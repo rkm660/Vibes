@@ -250,6 +250,40 @@ angular.module('starter').controller('EveryoneController', function($scope, $com
         bgGeo.start();
     };
 
+    function initPushwoosh() {
+    var pushNotification = cordova.require("com.pushwoosh.plugins.pushwoosh.PushNotification");
+ 
+    //set push notification callback before we initialize the plugin
+    document.addEventListener('push-notification', function(event) {
+                                //get the notification payload
+                                var notification = event.notification;
+ 
+                                //display alert to the user for example
+                                alert(notification.aps.alert);
+                               
+                                //clear the app badge
+                                pushNotification.setApplicationIconBadgeNumber(0);
+                            });
+ 
+    //initialize the plugin
+    pushNotification.onDeviceReady({pw_appid:"CAE70-20186"});
+     
+    //register for pushes
+    pushNotification.registerDevice(
+        function(status) {
+            var deviceToken = status['deviceToken'];
+            console.warn('registerDevice: ' + deviceToken);
+        },
+        function(status) {
+            console.warn('failed to register : ' + JSON.stringify(status));
+            alert(JSON.stringify(['failed to register ', status]));
+        }
+    );
+     
+    //reset badges on app start
+    pushNotification.setApplicationIconBadgeNumber(0);
+}
+
     $scope.$on("$ionicView.afterEnter", function(event) {
         init();
     })
@@ -259,6 +293,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $com
             try {
                 startBGWatch();
                 $scope.refreshMap();
+                initPushwoosh();
             } catch (err) {
                 alert("There was an error with background geolocation, please change location settings and restart the app.");
                 console.log(err);
