@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic',  'firebase', 'ngCordova', 'ngTouch'])
+angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch'])
 
 .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -25,6 +25,14 @@ angular.module('starter', ['ionic',  'firebase', 'ngCordova', 'ngTouch'])
                 BackgroundGeolocation.configurePlugin(window.plugins.backgroundGeoLocation);
             }
         }
+
+        var push = new Ionic.Push({
+            
+        });
+
+        push.register(function(token) {
+            console.log("Device token:", token.token);
+        });
 
 
     });

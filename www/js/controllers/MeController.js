@@ -36,8 +36,6 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
         var emaRef = new Firebase("https://thevibe.firebaseio.com/EMAs/");
         var query = emaRef.orderByChild("uid").equalTo(uid);
         $scope.EMAs = $firebaseArray(query);
-
-
     }
 
     //iniitalize landmarks 

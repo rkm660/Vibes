@@ -23,7 +23,8 @@
       "locator": "https://github.com/phonegap-build/PushPlugin.git",
       "id": "com.phonegap.plugins.PushPlugin"
     },
-    "pushwoosh-cordova-plugin"
+    "pushwoosh-cordova-plugin",
+    "phonegap-plugin-push"
   ],
   "cordovaPlatforms": [
     "ios"
