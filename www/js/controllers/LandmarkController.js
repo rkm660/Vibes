@@ -1,7 +1,9 @@
 angular.module('starter').controller('LandmarkController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService, $stateParams, $location) {
 
     var ref, auth;
-
+    $scope.moods = [{id:1,url:"img/crying1.png"},{id:2,url:"img/crying2.png"},{id:3,url:"img/neutral.png"}
+    ,{id:4,url:"img/smile4.png"},{id:5,url:"img/smile5.png"}];
+    $scope.selectedIndex = 0;
     //init
     var init = function() {
         ref = new Firebase("https://thevibe.firebaseio.com/");
@@ -53,6 +55,11 @@ angular.module('starter').controller('LandmarkController', function($scope, $roo
         $scope.landmarks = $firebaseArray(locRef);
 
     };
+    $scope.setEmojiValue = function(emojiID, $index)
+        {         
+            $scope.EMA.mood = emojiID;
+            $scope.selectedIndex = $index;
+        };
 
     // default login screen
 

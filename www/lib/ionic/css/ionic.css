@@ -8594,7 +8594,8 @@ progress {
   .button.button-stable {
     border-color: transparent;
     background-color: #f8f8f8;
-    color: #444; }
+    color: #444;
+    border-radius: 10  }
     .button.button-stable:hover {
       color: #444;
       text-decoration: none; }
@@ -8615,7 +8616,8 @@ progress {
       .button.button-stable.button-outline.active, .button.button-stable.button-outline.activated {
         background-color: #b2b2b2;
         box-shadow: none;
-        color: #fff; }
+        color: #fff;
+        }
   .button.button-positive {
     border-color: transparent;
     background-color: #387ef5;
@@ -9331,6 +9333,8 @@ a.button {
 
 .no-resize {
   resize: none; }
+
+
 
 .block {
   display: block;
