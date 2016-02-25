@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, PushService, LandmarkService, Pusher) {
 
     var ref, auth, mood;
@@ -5,6 +6,21 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
     ,{id:4,url:"img/smile4.png"},{id:5,url:"img/smile5.png"}];
     
     $scope.selectedIndex = 0;
+=======
+angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, Utils, LandmarkService, Pusher) {
+
+    var ref, auth;
+
+  //Modify this to trigger push notifications for current user.
+  Pusher.subscribe('items', 'updated', function (landmarks) {
+    angular.forEach(landmarks, function(landmark)
+    {
+        alert(landmark.name);
+    });
+    
+  });
+
+>>>>>>> 8a949a6087400c1f8ff1a96d6055a77cf3d577df
     //init
     var init = function() {
         ref = new Firebase("https://thevibe.firebaseio.com/");
@@ -28,17 +44,12 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                 $scope.loggedIn = true;
                 setEMAs($rootScope.currentUser.uid);
                 setLandmarks();
-
-                $ionicPlatform.ready(function() {
-                    PushService.identifyUser($rootScope.currentUser.uid).then(function(user) {
-                        PushService.registerUser();
-                    });
-                });
-
             }
         });
 
     };
+
+
 
     //iniitalize feed
 
@@ -46,8 +57,6 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
         var emaRef = new Firebase("https://thevibe.firebaseio.com/EMAs/");
         var query = emaRef.orderByChild("uid").equalTo(uid);
         $scope.EMAs = $firebaseArray(query);
-
-
     }
 
     $scope.setEmojiValue = function(emojiID, $index)
@@ -161,6 +170,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
         $scope.EMAs.$remove(EMA);
     }
 
+<<<<<<< HEAD
     $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
         console.log('Ionic Push: Got token ', data.token, data.platform);
         $scope.token = data.token;
@@ -170,6 +180,8 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
  
 
 
+=======
+>>>>>>> 8a949a6087400c1f8ff1a96d6055a77cf3d577df
 
     $scope.$on("$ionicView.beforeEnter", function(event) {
         init();

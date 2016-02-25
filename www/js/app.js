@@ -7,12 +7,10 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch', 'doowb.angular-pusher'])
 
-.run(function($ionicPlatform, $ionicAnalytics) {
+.run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
-        $ionicAnalytics.register();
-
 
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -27,6 +25,14 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova
                 BackgroundGeolocation.configurePlugin(window.plugins.backgroundGeoLocation);
             }
         }
+
+        var push = new Ionic.Push({
+            
+        });
+
+        push.register(function(token) {
+            console.log("Device token:", token.token);
+        });
 
 
     });
@@ -78,13 +84,9 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova
             }
         });
 
-    $ionicAppProvider.identify({
-        app_id: 'e2c37079',
-        api_key: 'ef40f02e18c3b70ed3e92aa1fb37991f16a5c66383dff1ff',
-        dev_push: true
-    });
-
-
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/me');
+    PusherServiceProvider
+    .setToken('ddb3f1693ed424d352cd')
+    .setOptions({});
 });

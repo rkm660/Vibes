@@ -1,4 +1,4 @@
-angular.module('starter').controller('LandmarkController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, PushService, LandmarkService, $stateParams, $location) {
+angular.module('starter').controller('LandmarkController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService, $stateParams, $location) {
 
     var ref, auth;
     $scope.moods = [{id:1,url:"img/crying1.png"},{id:2,url:"img/crying2.png"},{id:3,url:"img/neutral.png"}
@@ -31,6 +31,7 @@ angular.module('starter').controller('LandmarkController', function($scope, $roo
                     setTimeout(function() {
                         $scope.$apply(function() {
                             $scope.landmark = landmark;
+                            console.log($scope.landmark);
                         })
                     }, 1000);
                 });
@@ -147,7 +148,12 @@ angular.module('starter').controller('LandmarkController', function($scope, $roo
     };
 
     $scope.removeEMA = function(EMA) {
-        $scope.EMAs.$remove(EMA);
+        if (EMA.uid == $rootScope.currentUser.uid){
+            $scope.EMAs.$remove(EMA);
+        }
+        else {
+            alert("Sorry, you don't have permission to delete this.");
+        }
     }
 
     $scope.$on("$ionicView.beforeEnter", function(event) {

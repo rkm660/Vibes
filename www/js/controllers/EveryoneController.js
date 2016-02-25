@@ -1,4 +1,4 @@
-angular.module('starter').controller('EveryoneController', function($scope, $compile, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService, $window) {
+angular.module('starter').controller('EveryoneController', function($scope, $compile, $rootScope, $ionicModal, $ionicPlatform, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, Utils, LandmarkService, $window) {
 
     var ref, auth;
     //init
@@ -250,17 +250,15 @@ angular.module('starter').controller('EveryoneController', function($scope, $com
         bgGeo.start();
     };
 
-    $scope.$on("$ionicView.beforeEnter", function(event) {
+    $scope.$on("$ionicView.afterEnter", function(event) {
         init();
-        $scope.refreshMap();
-
     })
 
     $scope.$on("$ionicView.loaded", function(event) {
         $ionicPlatform.ready(function() {
             try {
                 startBGWatch();
-
+                $scope.refreshMap();
             } catch (err) {
                 alert("There was an error with background geolocation, please change location settings and restart the app.");
                 console.log(err);

@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "vibes server",
+  "main": "index.js",
+  "scripts": {
+    "test": "hello"
+  },
+  "author": "abhi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "firebase": "^2.4.1",
+    "pusher": "^1.2.0"
+  }
+}
