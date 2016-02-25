@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch'])
+angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch', 'doowb.angular-pusher'])
 
 .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -38,7 +38,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function(PusherServiceProvider, $stateProvider, $urlRouterProvider) {
 
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
@@ -86,4 +86,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/me');
+    PusherServiceProvider
+    .setToken('ddb3f1693ed424d352cd')
+    .setOptions({});
 });

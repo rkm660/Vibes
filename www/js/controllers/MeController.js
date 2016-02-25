@@ -1,6 +1,15 @@
-angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, Utils, LandmarkService) {
+angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, Utils, LandmarkService, Pusher) {
 
     var ref, auth;
+
+  //Modify this to trigger push notifications for current user.
+  Pusher.subscribe('items', 'updated', function (landmarks) {
+    angular.forEach(landmarks, function(landmark)
+    {
+        alert(landmark.name);
+    });
+    
+  });
 
     //init
     var init = function() {
@@ -29,6 +38,8 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
         });
 
     };
+
+
 
     //iniitalize feed
 
