@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch', 'ionic.service.push', 'ionic.service.analytics'])
+angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch', 'doowb.angular-pusher'])
 
 .run(function($ionicPlatform, $ionicAnalytics) {
     $ionicPlatform.ready(function() {
@@ -32,7 +32,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicAppProvider) {
+.config(function(PusherServiceProvider, $stateProvider, $urlRouterProvider) {
 
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
