@@ -26,13 +26,13 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova
             }
         }
 
-        var push = new Ionic.Push({
+        // var push = new Ionic.Push({
             
-        });
+        // });
 
-        push.register(function(token) {
-            console.log("Device token:", token.token);
-        });
+        // push.register(function(token) {
+        //     console.log("Device token:", token.token);
+        // });
 
 
     });
