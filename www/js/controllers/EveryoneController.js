@@ -146,10 +146,10 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
                             if (mood == NaN) {
                                 color = "#000000";
                             }
-                            if (mood < 5) {
+                            if (mood < 2.5) {
                                 color = "#FF0000";
                             }
-                            if (mood >= 5) {
+                            if (mood >= 2.5) {
                                 color = "#00FF00";
                             }
 

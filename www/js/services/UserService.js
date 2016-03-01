@@ -30,7 +30,8 @@ starter.service('UserService', function($q) {
             } else {
                 console.log("Successfully created user account with uid:", userData);
                 var newUserRef = ref.child("users").child(userData.uid).set({
-                    email : credentials.email
+                    email : credentials.email,
+                    lastNotiReceived : 0
                 }, function(error) {
                     if (error) {
                         console.log('Synchronization failed');

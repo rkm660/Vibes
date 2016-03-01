@@ -90,6 +90,7 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
             var authRegister = resRegister[0];
             console.log(resRegister);
             if (authRegister) {
+                
                 $scope.login(credentials);
             }
             if (errorRegister) {
