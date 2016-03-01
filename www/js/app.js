@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-var starter = angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch']);
+var starter = angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch','angularMoment']);
 
 starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen) {
     $ionicPlatform.ready(function() {
