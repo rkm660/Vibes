@@ -76,6 +76,18 @@ starter.run(function($ionicPlatform, $rootScope) {
                 }
             }
         })
+
+     .state('tab.settings', {
+            url: '/settings',
+            views: {
+                'tab-settings': {
+                    templateUrl: 'templates/tab-settings.html',
+                    controller: 'SettingsController'
+                }
+            }
+        })
+
+
         .state('tab.landmark-detail', {
             url: '/us/:landmarkID',
             views: {
