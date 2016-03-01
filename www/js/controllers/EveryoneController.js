@@ -121,9 +121,6 @@ angular.module('starter').controller('EveryoneController', function($scope, $com
                                 },
                             });
 
-                            marker.addListener('click', function() {
-                                infoWindow.open($scope.map, marker);
-                            });
                         } else {
                             var marker = new google.maps.Marker({
                                 position: coords,
@@ -134,10 +131,7 @@ angular.module('starter').controller('EveryoneController', function($scope, $com
                                     scale: 5
                                 },
                             });
-                            marker.addListener('click', function() {
-                                infoWindow.open($scope.map, marker);
-                                infoWindow.setContent(value.thought);
-                            });
+                           
                         }
                     });
 
