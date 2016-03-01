@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 var starter = angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch']);
 
-starter.run(function($ionicPlatform, $rootScope) {
+starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -27,13 +27,13 @@ starter.run(function($ionicPlatform, $rootScope) {
         }
 
         var push = new Ionic.Push({
-            
+
         });
 
         push.register(function(token) {
             console.log("Device token:", token.token);
             $rootScope.token = token.token;
-            
+            $cordovaSplashscreen.hide()
         });
 
 
@@ -68,35 +68,35 @@ starter.run(function($ionicPlatform, $rootScope) {
     })
 
     .state('tab.us', {
-            url: '/us',
-            views: {
-                'tab-us': {
-                    templateUrl: 'templates/tab-us.html',
-                    controller: 'EveryoneController'
-                }
+        url: '/us',
+        views: {
+            'tab-us': {
+                templateUrl: 'templates/tab-us.html',
+                controller: 'EveryoneController'
             }
-        })
+        }
+    })
 
-     .state('tab.settings', {
-            url: '/settings',
-            views: {
-                'tab-settings': {
-                    templateUrl: 'templates/tab-settings.html',
-                    controller: 'SettingsController'
-                }
+    .state('tab.settings', {
+        url: '/settings',
+        views: {
+            'tab-settings': {
+                templateUrl: 'templates/tab-settings.html',
+                controller: 'SettingsController'
             }
-        })
+        }
+    })
 
 
-        .state('tab.landmark-detail', {
-            url: '/us/:landmarkID',
-            views: {
-                'tab-us': {
-                    templateUrl: 'templates/landmark.html',
-                    controller: 'LandmarkController'
-                }
+    .state('tab.landmark-detail', {
+        url: '/us/:landmarkID',
+        views: {
+            'tab-us': {
+                templateUrl: 'templates/landmark.html',
+                controller: 'LandmarkController'
             }
-        });
+        }
+    });
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/me');
