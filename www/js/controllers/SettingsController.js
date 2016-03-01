@@ -28,13 +28,13 @@ starter.controller('SettingsController', function($scope, $rootScope, $ionicModa
                         $scope.settings.age = user.age;
                     }
                     else {
-                        $scope.settings.age = "";
+                        $scope.settings.age = null;
                     }
                     if (user.gender != null){
                         $scope.settings.gender = user.gender;
                     }
                     else {
-                        $scope.settings.gender = "";
+                        $scope.settings.gender = null;
                     }
                 });
 
