@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch'])
+var starter = angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch']);
 
-.run(function($ionicPlatform) {
+starter.run(function($ionicPlatform, $rootScope) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -32,6 +32,8 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova
 
         push.register(function(token) {
             console.log("Device token:", token.token);
+            $rootScope.token = token.token;
+            
         });
 
 

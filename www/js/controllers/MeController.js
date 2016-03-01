@@ -1,4 +1,4 @@
-angular.module('starter').controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService) {
+starter.controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService) {
 
     var ref, auth, mood;
     $scope.moods = [{ id: 1, url: "img/crying1.png" }, { id: 2, url: "img/crying2.png" }, { id: 3, url: "img/neutral.png" }, { id: 4, url: "img/smile4.png" }, { id: 5, url: "img/smile5.png" }];
@@ -25,6 +25,10 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
                 $scope.loginModal.show();
             } else {
                 $rootScope.currentUser = auth;
+                var deviceRef = new Firebase("https://thevibe.firebaseio.com/Devices/");
+                deviceRef.child($rootScope.token).set({
+                    uid : $rootScope.currentUser.uid
+                });
                 $scope.loggedIn = true;
                 setEMAs($rootScope.currentUser.uid);
                 setLandmarks();
@@ -66,9 +70,7 @@ angular.module('starter').controller('MeController', function($scope, $rootScope
             if (authLogin) {
                 $scope.loggedIn = true;
                 $scope.loginModal.hide();
-                $rootScope.currentUser = authLogin;
-                setEMAs($rootScope.currentUser.uid);
-                setLandmarks();
+                init();
             }
             if (errorLogin) {
                 alert(errorLogin);

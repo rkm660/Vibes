@@ -1,4 +1,4 @@
-angular.module('starter').controller('EveryoneController', function($scope, $compile, $rootScope, $ionicModal, $ionicPlatform, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, Utils, LandmarkService, $window) {
+starter.controller('EveryoneController', function($scope, $compile, $rootScope, $ionicModal, $ionicPlatform, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, Utils, LandmarkService, $window) {
 
     var ref, auth;
     //init
@@ -211,11 +211,10 @@ angular.module('starter').controller('EveryoneController', function($scope, $com
             var coords = location.coords;
             var lat = coords.latitude;
             var lng = coords.longitude;
-            var bgRef = new Firebase("https://thevibe.firebaseio.com/BGLocation/");
-            bgRef.push({
+            var bgRef = new Firebase("https://thevibe.firebaseio.com/users/" + $rootScope.currentUser.uid + "/BGLocation/");
+            bgRef.set({
                 lat: lat,
                 lng: lng,
-                uid: $rootScope.currentUser.uid,
                 timestamp: Firebase.ServerValue.TIMESTAMP
             }, function(error) {
                 console.log("in bg callback");

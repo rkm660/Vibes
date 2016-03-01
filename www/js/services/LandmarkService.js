@@ -1,4 +1,4 @@
-angular.module('starter').service('LandmarkService', function($q, $firebaseArray) {
+starter.service('LandmarkService', function($q, $firebaseArray) {
     var self = this;
 
     self.getLandmarkByName = function(name) {
