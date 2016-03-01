@@ -247,13 +247,14 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
 
     $scope.$on("$ionicView.afterEnter", function(event) {
         init();
+        $scope.refreshMap();
+
     })
 
     $scope.$on("$ionicView.loaded", function(event) {
         $ionicPlatform.ready(function() {
             try {
                 startBGWatch();
-                $scope.refreshMap();
             } catch (err) {
                 alert("There was an error with background geolocation, please change location settings and restart the app.");
                 console.log(err);

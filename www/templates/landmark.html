@@ -7,8 +7,7 @@
         <div class="list">
             <a ng-swipe-left="removeEMA(EMA)" class="item" ng-repeat="EMA in EMAs" href="#">
                 <!-- <span ng-class="EMA.mood >= 5 ? 'badge badge-balanced' : 'badge badge-assertive'" >{{EMA.mood}}</span> -->
-                <span class="emaText">{{EMA.thought}}</span>
-                <br>
+                <span class="emaText">"{{EMA.thought}}"</span>
                 <small>Posted <time am-time-ago="{{EMA.timestamp}}"></time></small>
                 <span ng-repeat="mood in moods" >
                 <img class ="emaList" ng-class="{'redSmiley': EMA.mood <3, 'greenSmiley': EMA.mood >3, 'smileySelected': EMA.mood == 3}" ng-src="{{mood.url}}" ng-if="EMA.mood==mood.id" height="40"  />
