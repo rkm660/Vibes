@@ -3,7 +3,7 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
     var ref, auth, mood;
     $scope.moods = [{ id: 1, url: "img/crying1.png" }, { id: 2, url: "img/crying2.png" }, { id: 3, url: "img/neutral.png" }, { id: 4, url: "img/smile4.png" }, { id: 5, url: "img/smile5.png" }];
 
-    $scope.selectedIndex = 0;
+    $scope.selectedIndex = 2;
 
     //init
     var init = function() {
@@ -13,7 +13,7 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
         $scope.createEMADisabled = false;
         $scope.EMA = {
             thought: "",
-            mood: null,
+            mood: 3,
             landmark: null
         }
         $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -25,10 +25,13 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
                 $scope.loginModal.show();
             } else {
                 $rootScope.currentUser = auth;
-                var deviceRef = new Firebase("https://thevibe.firebaseio.com/Devices/");
-                deviceRef.child($rootScope.token).set({
-                    uid : $rootScope.currentUser.uid
-                });
+                if ($rootScope.token) {
+                    var deviceRef = new Firebase("https://thevibe.firebaseio.com/Devices/");
+                    deviceRef.child($rootScope.token).set({
+                        uid: $rootScope.currentUser.uid
+                    });
+                }
+
                 $scope.loggedIn = true;
                 setEMAs($rootScope.currentUser.uid);
                 setLandmarks();
@@ -90,7 +93,7 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
             var authRegister = resRegister[0];
             console.log(resRegister);
             if (authRegister) {
-                
+
                 $scope.login(credentials);
             }
             if (errorRegister) {
@@ -114,6 +117,9 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
             timeout: 10000,
             enableHighAccuracy: true
         };
+        if (EMA.landmark == ""){
+            EMA.landmark = null;
+        }
         $cordovaGeolocation
             .getCurrentPosition(posOptions)
             .then(function(position) {
@@ -127,9 +133,7 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
                     timestamp: Firebase.ServerValue.TIMESTAMP,
                     landmarkID: EMA.landmark,
                     uid: $rootScope.currentUser.uid
-                }).then(function(ref) {
-
-                });
+                }).then(function(ref) {});
 
                 $scope.EMA = {
                     thought: "",

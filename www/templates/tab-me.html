@@ -27,14 +27,12 @@
         <ion-content class="padding">
             <div class="card">
                 <div class="item item-divider">
-                    <div>
-                    </div>
                     Hows your mood right now?
                     <div class="row">
                         <div class="col">
                             <span ng-repeat="mood in moods">
-<img ng-class="{ 'smileySelected': $index == selectedIndex, 'smiley':$index != selectedIndex }" ng-src="{{mood.url}}" ng-click="setEmojiValue(mood.id,$index)" >
-</span>
+                                <img ng-class="{ 'smileySelected': $index == selectedIndex, 'smiley':$index != selectedIndex }" ng-src="{{mood.url}}" ng-click="setEmojiValue(mood.id,$index)" />
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -46,13 +44,16 @@
                     </label>
                     <label class="item item-input item-select">
                         <div class="input-label">
-                            Share with landmark?
+                            Share?
                         </div>
                         <select ng-model="EMA.landmark">
+                            <option value="" selected></option>
                             <option ng-value="landmark.$id" ng-repeat="landmark in landmarks">{{landmark.name}}</option>
                         </select>
                     </label>
                     <button ng-disabled="createEMADisabled" class="button button-full button-positive" ng-click="createEMA(EMA)">Create</button>
+                </div>
+            </div>
         </ion-content>
     </ion-modal-view>
 </script>
