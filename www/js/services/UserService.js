@@ -2,6 +2,15 @@ starter.service('UserService', function($q) {
     var self = this;
     var ref = new Firebase("https://thevibe.firebaseio.com/");
 
+    self.getUser = function(uid){
+        var deferred = $q.defer();
+        var userRef = new Firebase("https://thevibe.firebaseio.com/users/" + uid);
+        userRef.once("value", function(user){
+            deferred.resolve(user.val());
+        });
+        return deferred.promise;
+    }
+
     self.login = function(credentials) {
         var deferred = $q.defer();
         ref.authWithPassword({

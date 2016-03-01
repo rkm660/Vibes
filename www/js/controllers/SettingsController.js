@@ -17,14 +17,27 @@ starter.controller('SettingsController', function($scope, $rootScope, $ionicModa
                 $scope.loginModal.show();
             } else {
                 $rootScope.currentUser = auth;
-                userRef = new Firebase("https://thevibe.firebaseio.com/users/" + $rootScope.currentUser.uid);
-
                 $scope.loggedIn = true;
-                $scope.settings = {
-                    age: "",
-                    gender: "",
-                    email: $rootScope.currentUser.password.email
-                };
+                UserService.getUser($rootScope.currentUser.uid).then(function(user) {
+                    userRef = new Firebase("https://thevibe.firebaseio.com/users/" + $rootScope.currentUser.uid);
+
+                    $scope.settings = {
+                        email : $rootScope.currentUser.password.email
+                    };
+                    if (user.age != null) {
+                        $scope.settings.age = user.age;
+                    }
+                    else {
+                        $scope.settings.age = "";
+                    }
+                    if (user.gender != null){
+                        $scope.settings.gender = user.gender;
+                    }
+                    else {
+                        $scope.settings.gender = "";
+                    }
+                });
+
             }
         });
 
@@ -70,7 +83,7 @@ starter.controller('SettingsController', function($scope, $rootScope, $ionicModa
     $scope.changedAge = function(age) {
         console.log(age);
         userRef.update({
-            age : age
+            age: age
         });
 
     }
@@ -78,14 +91,7 @@ starter.controller('SettingsController', function($scope, $rootScope, $ionicModa
     $scope.changedGender = function(gender) {
         console.log(gender);
         userRef.update({
-            gender : gender
-        });
-    }
-
-    $scope.changedEmail = function(email) {
-        console.log(email);
-        userRef.update({
-            email : email
+            gender: gender
         });
     }
 
