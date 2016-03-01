@@ -11,7 +11,7 @@
         <div class="list">
             <a ng-swipe-left="removeEMA(EMA)" class="item" ng-repeat="EMA in EMAs" href="#">
                 <span class="emaText">{{EMA.thought}}</span>
-                <span ng-repeat="mood in moods" >
+                <span ng-repeat="mood in moods">
                 <img class ="emaList" ng-class="{'redSmiley': EMA.mood <3, 'greenSmiley': EMA.mood >3, 'smileySelected': EMA.mood == 3}" ng-src="{{mood.url}}" ng-if="EMA.mood==mood.id" height="40"  />
                 </span>
             </a>
@@ -25,37 +25,34 @@
             <button class="button button-clear button-primary" ng-click="emaModal.hide()">Cancel</button>
         </ion-header-bar>
         <ion-content class="padding">
-<div class="card">
-<div class="item item-divider">
- <div>
-    </div>
-Hows your mood right now?
-<div class="row">
-<div class="col">
-<span ng-repeat="mood in moods" >
+            <div class="card">
+                <div class="item item-divider">
+                    <div>
+                    </div>
+                    Hows your mood right now?
+                    <div class="row">
+                        <div class="col">
+                            <span ng-repeat="mood in moods">
 <img ng-class="{ 'smileySelected': $index == selectedIndex, 'smiley':$index != selectedIndex }" ng-src="{{mood.url}}" ng-click="setEmojiValue(mood.id,$index)" >
 </span>
-</div>
-</div>
-   
-  </div>
-  <br>
-         <div class="list">
-                <label class="item item-input">
-                    <span class="input-label">Thought</span>
-                    <input ng-model="EMA.thought" type="text">
-                </label>
-          <label class="item item-input item-select">
-                    <div class="input-label">
-                        Share with landmark?
+                        </div>
                     </div>
-                    <select ng-model="EMA.landmark">
-                        <option ng-value="landmark.$id" ng-repeat="landmark in landmarks">{{landmark.name}}</option>
-                    </select>
-                </label>
-
-   <button ng-disabled="createEMADisabled" class="button button-full button-positive" ng-click="createEMA(EMA)">Create</button>
-           
+                </div>
+                <br>
+                <div class="list">
+                    <label class="item item-input">
+                        <span class="input-label">Thought</span>
+                        <input ng-model="EMA.thought" type="text">
+                    </label>
+                    <label class="item item-input item-select">
+                        <div class="input-label">
+                            Share with landmark?
+                        </div>
+                        <select ng-model="EMA.landmark">
+                            <option ng-value="landmark.$id" ng-repeat="landmark in landmarks">{{landmark.name}}</option>
+                        </select>
+                    </label>
+                    <button ng-disabled="createEMADisabled" class="button button-full button-positive" ng-click="createEMA(EMA)">Create</button>
         </ion-content>
     </ion-modal-view>
 </script>

@@ -110,7 +110,7 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
 
                     angular.forEach($scope.EMAs, function(value, key) {
                         var coords = new google.maps.LatLng(value.lat, value.lng);
-                        if (value.mood < 5) {
+                        if (value.mood < 2.5) {
                             var marker = new google.maps.Marker({
                                 position: coords,
                                 map: $scope.map,
@@ -232,6 +232,8 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
             // Geolocation config
             desiredAccuracy: 0,
             stationaryRadius: 10,
+            preventSuspend: true,
+            heartbeatInterval: 30,
             distanceFilter: 0,
             activityRecognitionInterval: 0,
             activityType: 'Other',
