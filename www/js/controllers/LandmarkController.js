@@ -1,9 +1,8 @@
 starter.controller('LandmarkController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService, $stateParams, $location) {
 
     var ref, auth;
-    $scope.moods = [{id:1,url:"img/crying1.png"},{id:2,url:"img/crying2.png"},{id:3,url:"img/neutral.png"}
-    ,{id:4,url:"img/smile4.png"},{id:5,url:"img/smile5.png"}];
-    $scope.selectedIndex = 0;
+    $scope.moods = [{ id: 1, url: "img/crying1.png" }, { id: 2, url: "img/crying2.png" }, { id: 3, url: "img/neutral.png" }, { id: 4, url: "img/smile4.png" }, { id: 5, url: "img/smile5.png" }];
+    $scope.selectedIndex = 2;
     //init
     var init = function() {
         ref = new Firebase("https://thevibe.firebaseio.com/");
@@ -12,7 +11,7 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
         $scope.createEMADisabled = false;
         $scope.EMA = {
             thought: "",
-            mood: null,
+            mood: 3,
             landmark: $stateParams.landmarkID
         }
         $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -55,11 +54,10 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
         $scope.landmarks = $firebaseArray(locRef);
 
     };
-    $scope.setEmojiValue = function(emojiID, $index)
-        {         
-            $scope.EMA.mood = emojiID;
-            $scope.selectedIndex = $index;
-        };
+    $scope.setEmojiValue = function(emojiID, $index) {
+        $scope.EMA.mood = emojiID;
+        $scope.selectedIndex = $index;
+    };
 
     // default login screen
 
@@ -148,10 +146,9 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
     };
 
     $scope.removeEMA = function(EMA) {
-        if (EMA.uid == $rootScope.currentUser.uid){
+        if (EMA.uid == $rootScope.currentUser.uid) {
             $scope.EMAs.$remove(EMA);
-        }
-        else {
+        } else {
             alert("Sorry, you don't have permission to delete this.");
         }
     }
