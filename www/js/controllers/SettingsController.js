@@ -58,9 +58,8 @@ starter.controller('SettingsController', function($scope, $rootScope, $ionicModa
             var errorLogin = resLogin[1];
             var authLogin = resLogin[0];
             if (authLogin) {
-                $scope.loggedIn = true;
                 $scope.loginModal.hide();
-                $rootScope.currentUser = authLogin;
+                init();
             }
             if (errorLogin) {
                 alert(errorLogin);
@@ -70,7 +69,6 @@ starter.controller('SettingsController', function($scope, $rootScope, $ionicModa
 
     $scope.logout = function() {
         ref.unauth();
-        $scope.loggedIn = false;
         $scope.loginModal.show();
     }
 

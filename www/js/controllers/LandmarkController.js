@@ -3,6 +3,7 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
     var ref, auth;
     $scope.moods = [{ id: 1, url: "img/crying1.png" }, { id: 2, url: "img/crying2.png" }, { id: 3, url: "img/neutral.png" }, { id: 4, url: "img/smile4.png" }, { id: 5, url: "img/smile5.png" }];
     $scope.selectedIndex = 2;
+
     //init
     var init = function() {
         ref = new Firebase("https://thevibe.firebaseio.com/");
@@ -26,14 +27,7 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
                 $scope.loggedIn = true;
                 setEMAs($stateParams.landmarkID);
                 setLandmarks();
-                LandmarkService.getLandmarkByID($stateParams.landmarkID).then(function(landmark) {
-                    setTimeout(function() {
-                        $scope.$apply(function() {
-                            $scope.landmark = landmark;
-                            console.log($scope.landmark);
-                        })
-                    }, 1000);
-                });
+
             }
         });
 
@@ -119,13 +113,13 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
                         mood: EMA.mood,
                         lat: lat,
                         lng: lng,
-                        weather : {
-                            temp : weather.main.temp * 1.8 + 32,
-                            sunrise : weather.sys.sunrise,
-                            sunset : weather.sys.sunset,
-                            type : weather.weather[0].main,
-                            desc : weather.weather[0].description,
-                            icon : "http://openweathermap.org/img/w/"+weather.weather[0].icon+".png"
+                        weather: {
+                            temp: weather.main.temp * 1.8 + 32,
+                            sunrise: weather.sys.sunrise,
+                            sunset: weather.sys.sunset,
+                            type: weather.weather[0].main,
+                            desc: weather.weather[0].description,
+                            icon: "http://openweathermap.org/img/w/" + weather.weather[0].icon + ".png"
                         },
                         timestamp: Firebase.ServerValue.TIMESTAMP,
                         landmarkID: EMA.landmark,
@@ -169,4 +163,10 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
     $scope.$on("$ionicView.beforeEnter", function(event) {
         init();
     })
+    $scope.$on("$ionicView.afterEnter", function(event) {
+        LandmarkService.getLandmarkByID($stateParams.landmarkID).then(function(landmark) {
+            $scope.landmark = landmark;
+            console.log($scope.landmark);
+        });
+    });
 });

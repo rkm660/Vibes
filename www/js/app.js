@@ -84,6 +84,16 @@ starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPop
             }
         }
     })
+    
+    .state('tab.landmark-detail', {
+        url: '/us/:landmarkID',
+        views: {
+            'tab-us': {
+                templateUrl: 'templates/landmark.html',
+                controller: 'LandmarkController'
+            }
+        }
+    })
 
     .state('tab.settings', {
         url: '/settings',
@@ -96,15 +106,7 @@ starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPop
     })
 
 
-    .state('tab.landmark-detail', {
-        url: '/us/:landmarkID',
-        views: {
-            'tab-us': {
-                templateUrl: 'templates/landmark.html',
-                controller: 'LandmarkController'
-            }
-        }
-    });
+    ;
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/me');
