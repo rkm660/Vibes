@@ -31,7 +31,6 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
                         uid: $rootScope.currentUser.uid
                     });
                 }
-
                 $scope.loggedIn = true;
                 setEMAs($rootScope.currentUser.uid);
                 setLandmarks();
@@ -117,7 +116,7 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
             timeout: 10000,
             enableHighAccuracy: true
         };
-        if (EMA.landmark == ""){
+        if (EMA.landmark == "") {
             EMA.landmark = null;
         }
         $cordovaGeolocation
@@ -125,30 +124,44 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
             .then(function(position) {
                 var lat = position.coords.latitude;
                 var lng = position.coords.longitude;
-                $scope.EMAs.$add({
-                    thought: EMA.thought,
-                    mood: EMA.mood,
-                    lat: lat,
-                    lng: lng,
-                    timestamp: Firebase.ServerValue.TIMESTAMP,
-                    landmarkID: EMA.landmark,
-                    uid: $rootScope.currentUser.uid,
-                    notify : true
-                }).then(function(ref) {});
+                Utils.getWeather(lat, lng).success(function(weather) {
+                    
+                    $scope.EMAs.$add({
+                        thought: EMA.thought,
+                        mood: EMA.mood,
+                        lat: lat,
+                        lng: lng,
+                        weather : {
+                            temp : weather.main.temp * 1.8 + 32,
+                            sunrise : weather.sys.sunrise,
+                            sunset : weather.sys.sunset,
+                            type : weather.weather[0].main,
+                            desc : weather.weather[0].description,
+                            icon : "http://openweathermap.org/img/w/"+weather.weather[0].icon+".png"
+                        },
+                        timestamp: Firebase.ServerValue.TIMESTAMP,
+                        landmarkID: EMA.landmark,
+                        uid: $rootScope.currentUser.uid,
+                        notify: true
+                    }).then(function(ref) {});
 
-                $scope.EMA = {
-                    thought: "",
-                    mood: null,
-                    landmark: null
-                }
-                $scope.emaModal.hide();
-                $scope.createEMADisabled = false;
+                    $scope.EMA = {
+                        thought: "",
+                        mood: null,
+                        landmark: null
+                    }
+                    $scope.emaModal.hide();
+                    $scope.createEMADisabled = false;
+                }).error(function(err){
+                    console.log(err);
+                });
+
             }, function(err) {
                 // error
                 if (err.code === 1) {
                     alert("Please enable location on your device.");
                 } else {
-                    alert(err.message);
+                    alert(err.code);
                 }
                 $scope.createEMADisabled = false;
 

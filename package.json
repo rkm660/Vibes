@@ -26,7 +26,5 @@
     "pushwoosh-cordova-plugin",
     "phonegap-plugin-push"
   ],
-  "cordovaPlatforms": [
-    "ios"
-  ]
+  "cordovaPlatforms": []
 }

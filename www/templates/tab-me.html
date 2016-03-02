@@ -9,7 +9,8 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list">
-            <a ng-swipe-left="removeEMA(EMA)" class="item" ng-repeat="EMA in EMAs" href="#">
+            <a ng-swipe-left="removeEMA(EMA)" class="item item-avatar" ng-repeat="EMA in EMAs" href="#">
+                <img ng-src="{{EMA.weather.icon}}"/>
                 <span class="emaText">"{{EMA.thought}}"</span>
                 <small> - <time am-time-ago="{{EMA.timestamp}}"></time></small>
                 <span ng-repeat="mood in moods">
