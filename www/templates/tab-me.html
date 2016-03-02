@@ -3,10 +3,6 @@
         <button ng-disabled="createEMADisabled" class="button button-icon ion-compose" ng-click="emaModal.show()">
         </button>
     </ion-nav-buttons>
-    <ion-nav-buttons side="primary">
-        <button class="button button-icon ion-log-out" ng-click="logout()">
-        </button>
-    </ion-nav-buttons>
     <ion-content>
         <div class="list">
             <a ng-swipe-left="removeEMA(EMA)" class="item item-avatar" ng-repeat="EMA in EMAs" href="#">
