@@ -132,7 +132,8 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
                     lng: lng,
                     timestamp: Firebase.ServerValue.TIMESTAMP,
                     landmarkID: EMA.landmark,
-                    uid: $rootScope.currentUser.uid
+                    uid: $rootScope.currentUser.uid,
+                    notify : true
                 }).then(function(ref) {});
 
                 $scope.EMA = {

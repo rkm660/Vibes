@@ -18,23 +18,31 @@ starter.controller('SettingsController', function($scope, $rootScope, $ionicModa
             } else {
                 $rootScope.currentUser = auth;
                 $scope.loggedIn = true;
+                $scope.schools = [
+                    "Arts & Sciences", "Communication", "Education and Social Policy", "Engineering", "Journalism and Marketing", "Music", "Professional Studies"
+                ];
+
                 UserService.getUser($rootScope.currentUser.uid).then(function(user) {
                     userRef = new Firebase("https://thevibe.firebaseio.com/users/" + $rootScope.currentUser.uid);
 
                     $scope.settings = {
-                        email : $rootScope.currentUser.password.email
+                        email: $rootScope.currentUser.password.email
                     };
                     if (user.age != null) {
                         $scope.settings.age = user.age;
-                    }
-                    else {
+                    } else {
                         $scope.settings.age = null;
                     }
-                    if (user.gender != null){
+                    if (user.gender != null) {
                         $scope.settings.gender = user.gender;
+                    } else {
+                        $scope.settings.gender = null;
+                    }
+                    if (user.school != null){
+                        $scope.settings.school = user.school;
                     }
                     else {
-                        $scope.settings.gender = null;
+                        $scope.settings.school = null;
                     }
                 });
 
@@ -80,6 +88,7 @@ starter.controller('SettingsController', function($scope, $rootScope, $ionicModa
         });
     };
 
+
     $scope.changedAge = function(age) {
         console.log(age);
         userRef.update({
@@ -92,6 +101,13 @@ starter.controller('SettingsController', function($scope, $rootScope, $ionicModa
         console.log(gender);
         userRef.update({
             gender: gender
+        });
+    }
+
+    $scope.changedSchool = function(school) {
+        console.log(school);
+        userRef.update({
+            school: school
         });
     }
 

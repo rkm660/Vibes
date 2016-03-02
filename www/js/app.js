@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-var starter = angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch','angularMoment']);
+var starter = angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch', 'angularMoment']);
 
-starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen) {
+starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPopup) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -27,13 +27,21 @@ starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen) {
         }
 
         var push = new Ionic.Push({
-
+            "onNotification": function(notification) {
+                if (notification["_raw"]["additionalData"]["foreground"] == true) {
+                    $ionicPopup.alert({
+                        title: 'Hello!',
+                        template: notification["_raw"]["message"]
+                    });
+                }
+            }
         });
+
 
         push.register(function(token) {
             console.log("Device token:", token.token);
             $rootScope.token = token.token;
-            $cordovaSplashscreen.hide()
+            $cordovaSplashscreen.hide();
         });
 
 

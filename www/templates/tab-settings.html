@@ -19,9 +19,14 @@
                     <option value="Female">Female</option>
                 </select>
             </label>
-            <label class="item item-input">
-                <span class="input-label">Email</span>
-                {{settings.email}}
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    School
+                </div>
+                <select ng-change="changedSchool(settings.school)" ng-model="settings.school">
+                    <option selected value=""></option>
+                    <option ng-repeat="school in schools">{{school}}</option>
+                </select>
             </label>
         </div>
     </ion-content>

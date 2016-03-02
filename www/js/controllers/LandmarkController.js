@@ -120,7 +120,8 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
                     lng: lng,
                     timestamp: Firebase.ServerValue.TIMESTAMP,
                     landmarkID: EMA.landmark,
-                    uid: $rootScope.currentUser.uid
+                    uid: $rootScope.currentUser.uid, 
+                    notify : true
                 }).then(function(ref) {
 
                 });
@@ -149,7 +150,7 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
         if (EMA.uid == $rootScope.currentUser.uid) {
             $scope.EMAs.$remove(EMA);
         } else {
-            alert("Sorry, you don't have permission to delete this.");
+            alert("You cannot delete someone else's Vibe!");
         }
     }
 
