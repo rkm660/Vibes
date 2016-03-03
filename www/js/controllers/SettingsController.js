@@ -21,7 +21,12 @@ starter.controller('SettingsController', function($scope, $rootScope, $ionicModa
                 $scope.schools = [
                     "Arts & Sciences", "Communication", "Education and Social Policy", "Engineering", "Journalism and Marketing", "Music", "Professional Studies"
                 ];
-
+                if ($rootScope.token) {
+                    var deviceRef = new Firebase("https://thevibe.firebaseio.com/Devices/");
+                    deviceRef.child($rootScope.token).set({
+                        uid: $rootScope.currentUser.uid
+                    });
+                }
                 UserService.getUser($rootScope.currentUser.uid).then(function(user) {
                     userRef = new Firebase("https://thevibe.firebaseio.com/users/" + $rootScope.currentUser.uid);
 
@@ -38,16 +43,14 @@ starter.controller('SettingsController', function($scope, $rootScope, $ionicModa
                     } else {
                         $scope.settings.gender = null;
                     }
-                    if (user.school != null){
+                    if (user.school != null) {
                         $scope.settings.school = user.school;
-                    }
-                    else {
+                    } else {
                         $scope.settings.school = null;
                     }
-                    if (user.maxFreq != null){
+                    if (user.maxFreq != null) {
                         $scope.settings.maxFreq = user.maxFreq;
-                    }
-                    else {
+                    } else {
                         $scope.settings.maxFreq = null;
                     }
                 });
