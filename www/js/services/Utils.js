@@ -51,7 +51,7 @@ starter.service('Utils', function($q, $http, $rootScope) {
                     bgGeo.finish(taskId); // <-- execute #finish when your work in callbackFn is complete
                 });
             } else {
-                bgGeo.finish(taskId); 
+                bgGeo.finish(taskId);
             }
 
         };
@@ -78,4 +78,5 @@ starter.service('Utils', function($q, $http, $rootScope) {
         // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
         bgGeo.start();
     };
+
 });

@@ -27,7 +27,6 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
                 $scope.loggedIn = true;
                 setEMAs($stateParams.landmarkID);
                 setLandmarks();
-
             }
         });
 
@@ -46,8 +45,8 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
     var setLandmarks = function() {
         var locRef = new Firebase("https://thevibe.firebaseio.com/Landmarks/");
         $scope.landmarks = $firebaseArray(locRef);
-
     };
+
     $scope.setEmojiValue = function(emojiID, $index) {
         $scope.EMA.mood = emojiID;
         $scope.selectedIndex = $index;
@@ -158,6 +157,8 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
 
     };
 
+
+
     $scope.removeEMA = function(EMA) {
         if (EMA.uid == $rootScope.currentUser.uid) {
             $scope.EMAs.$remove(EMA);
@@ -172,6 +173,14 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
     $scope.$on("$ionicView.afterEnter", function(event) {
         LandmarkService.getLandmarkByID($stateParams.landmarkID).then(function(landmark) {
             $scope.landmark = landmark;
+            UserService.getNearbyLandmarkIDs($rootScope.currentUser.uid).then(function(ls) {
+                if (ls.indexOf($stateParams.landmarkID) == -1){
+                    $scope.showCreate = false;
+                }
+                else {
+                    $scope.showCreate = true;
+                }
+            });
         });
     });
 });

@@ -1,6 +1,6 @@
 <ion-view view-title="{{landmark.name}}">
     <ion-nav-buttons side="secondary">
-        <button ng-disabled="createEMADisabled" class="button button-icon ion-compose" ng-click="emaModal.show()">
+        <button ng-show="showCreate" class="button button-icon ion-compose" ng-click="emaModal.show()">
         </button>
     </ion-nav-buttons>
     <ion-content>

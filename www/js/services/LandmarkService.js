@@ -106,6 +106,4 @@ starter.service('LandmarkService', function($q, $firebaseArray) {
         return deferred.promise;
     }
 
-
-
 });
