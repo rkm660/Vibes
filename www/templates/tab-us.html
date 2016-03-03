@@ -22,8 +22,10 @@
                     <span class="input-label">Password</span>
                     <input ng-model="credentials.password" type="password">
                 </label>
-                <button class="button button-full button-positive" ng-click="login(credentials)">Login</button>
-                <button class="button button-full button-positive" ng-click="register(credentials)">Register</button>
+                <div class="button-bar">
+                    <button class="button button-block button-stable" ng-click="login(credentials)">Login</button>
+                    <button class="button button-block button-positive" ng-click="register(credentials)">Register</button>
+                </div>
             </div>
         </ion-content>
     </ion-modal-view>

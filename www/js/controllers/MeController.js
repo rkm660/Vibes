@@ -48,21 +48,35 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $io
     }
 
     $scope.moreInfo = function(EMA) {
-        console.log(EMA);
-        LandmarkService.getLandmarkByID(EMA.landmarkID).then(function(l){
-            console.log(l);
-        });
+        var landmark;
+        if (EMA.landmarkID) {
+            LandmarkService.getLandmarkByID(EMA.landmarkID).then(function(l) {
+                landmark = l;
+                var myPopup = $ionicPopup.show({
+                    template: '<div class="list"><span class="item item-avatar item-text-wrap"><img ng-src="' + EMA.weather.icon + '" />' + '<p><strong>Temperature:</strong> ' + Math.round(EMA.weather.temp) + '&deg; F</p><p><strong>Daylight:</strong> ' + Utils.formatDayLength(EMA.weather.sunset, EMA.weather.sunrise) + ' hours</p></span><span class="item item-avatar item-text-wrap"><img src="'+$scope.moods[EMA.mood-1].url+'"<p><strong>Location:</strong> ' + landmark.name + '</p></span></div>',
+                    title: 'My Vibe',
+                    subTitle: 'Created: ' + Utils.formatDate(EMA.timestamp),
+                    scope: $scope,
+                    buttons: [{
+                        text: 'Okay',
+                        type: 'button-positive',
+                    }]
+                });
+            });
+        } else {
+            var myPopup = $ionicPopup.show({
+                template: '<div class="list"><span class="item item-avatar item-text-wrap"><img ng-src="' + EMA.weather.icon + '" />' + '<p><strong>Temperature:</strong> ' + Math.round(EMA.weather.temp) + '&deg; F</p><p><strong>Daylight:</strong> ' + Utils.formatDayLength(EMA.weather.sunset, EMA.weather.sunrise) + ' hours</p></span></div>',
+                title: 'My Vibe',
+                subTitle: 'Created: ' + Utils.formatDate(EMA.timestamp),
+                scope: $scope,
+                buttons: [{
+                    text: 'Okay',
+                    type: 'button-positive',
+                }]
+            });
+        }
 
-        var myPopup = $ionicPopup.show({
-            template: '<div class="list"><span class="item item-avatar item-text-wrap"><img ng-src="' + EMA.weather.icon + '" />' + '<p><strong>Temperature:</strong> ' + Math.round(EMA.weather.temp) + '&deg; F</p><p><strong>Daylight:</strong> '+ Utils.formatDayLength(EMA.weather.sunset,EMA.weather.sunrise) +' hours</p></span></div>',
-            title: 'My Vibe',
-            subTitle: 'Created: ' + Utils.formatDate(EMA.timestamp),
-            scope: $scope,
-            buttons: [{
-                text: 'Okay',
-                type: 'button-positive',
-            }]
-        });
+
     };
 
     $scope.setEmojiValue = function(emojiID, $index) {
@@ -192,6 +206,11 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $io
     $scope.removeEMA = function(EMA) {
         $scope.EMAs.$remove(EMA);
     }
+
+    $scope.showEMAModal = function() {
+        setLandmarks();
+        $scope.emaModal.show();
+    };
 
 
     $scope.$on("$ionicView.beforeEnter", function(event) {

@@ -5,12 +5,11 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list">
-            <a ng-swipe-left="removeEMA(EMA)" class="item item-avatar" ng-repeat="EMA in EMAs" href="#">
-                <img ng-src="{{EMA.weather.icon}}" />
-                <span class="emaText">"{{EMA.thought}}"</span>
-                <small> - <time am-time-ago="{{EMA.timestamp}}"></time></small>
-                <span ng-repeat="mood in moods">
-                <img class ="emaList" ng-class="{'redSmiley': EMA.mood <3, 'greenSmiley': EMA.mood >3, 'smileySelected': EMA.mood == 3}" ng-src="{{mood.url}}" ng-if="EMA.mood==mood.id" height="40"  />
+            <a ng-click="moreInfo(EMA)" ng-swipe-left="removeEMA(EMA)" class="item item-text-wrap item-avatar" ng-repeat="EMA in EMAs" href="#">
+                <img class ="emaList" ng-class="{'redSmiley': EMA.mood < 3, 'greenSmiley': EMA.mood > 3, 'smileySelected': EMA.mood == 3}" ng-src="{{moods[EMA.mood-1].url}}" height="40"  />
+                <span class="emaText">
+                    "{{EMA.thought}}"
+                        <small> - <time am-time-ago="{{EMA.timestamp}}"></time></small>
                 </span>
             </a>
         </div>
@@ -41,27 +40,6 @@
                     <input ng-model="EMA.thought" type="text">
                 </label>
                 <button ng-disabled="createEMADisabled" class="button button-full button-positive" ng-click="createEMA(EMA)">Create</button>
-            </div>
-        </ion-content>
-    </ion-modal-view>
-</script>
-<script id="templates/login.html" type="text/ng-template">
-    <ion-modal-view>
-        <ion-header-bar class="bar bar-header bar-positive">
-            <h1 class="title">Login</h1>
-        </ion-header-bar>
-        <ion-content class="padding">
-            <div class="list">
-                <label class="item item-input">
-                    <span class="input-label">Email</span>
-                    <input ng-model="credentials.email" type="text">
-                </label>
-                <label class="item item-input">
-                    <span class="input-label">Password</span>
-                    <input ng-model="credentials.password" type="password">
-                </label>
-                <button class="button button-full button-positive" ng-click="login(credentials)">Login</button>
-                <button class="button button-full button-positive" ng-click="register(credentials)">Register</button>
             </div>
         </ion-content>
     </ion-modal-view>

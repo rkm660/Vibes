@@ -89,11 +89,12 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
                 var mapOptions = {
                     center: latLng,
                     zoom: 15,
+                    streetViewControl: false,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
 
                 $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
+                
                 google.maps.event.addListenerOnce($scope.map, 'idle', function() {
                     var infoWindow = new google.maps.InfoWindow();
 
@@ -131,17 +132,19 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
                             var center = new google.maps.LatLng(landmark.lat, landmark.lng);
                             var color, mood, length;
                             mood = data[0];
+                            mood = mood == "N/A" ? mood : mood.toFixed(2);
                             emasLength = data[1];
                             if (mood == NaN) {
                                 color = "#000000";
                             }
                             if (mood < 2.5) {
                                 color = "#FF0000";
+
                             }
                             if (mood >= 2.5) {
                                 color = "#00FF00";
                             }
-
+                            mood = mood == "N/A" ? mood : mood.toString() + "/5";
                             var cityCircle = new google.maps.Circle({
                                 strokeColor: color,
                                 strokeOpacity: 0.8,
@@ -152,7 +155,6 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
                                 center: center,
                                 radius: landmark.radius
                             });
-
                             var infoString = "<div class=\"list\">" +
                                 "<a class=\"item\" ng-click=\"goToDetail('" + landmark.$id + "')\">" +
                                 "<span>Landmark: " + landmark.name + "</span><br>" +
@@ -195,9 +197,11 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
 
     $scope.$on("$ionicView.afterEnter", function(event) {
         init();
-        $scope.refreshMap();
+    });
 
-    })
+    $scope.$on("$ionicView.loaded", function(event) {
+        $scope.refreshMap();
+    });
 
 
 });

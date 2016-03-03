@@ -1,4 +1,4 @@
-starter.controller('LandmarkController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService, $stateParams, $location) {
+starter.controller('LandmarkController', function($scope, $rootScope, $ionicModal, $ionicPopup, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService, $stateParams, $location) {
 
     var ref, auth;
     $scope.moods = [{ id: 1, url: "img/crying1.png" }, { id: 2, url: "img/crying2.png" }, { id: 3, url: "img/neutral.png" }, { id: 4, url: "img/smile4.png" }, { id: 5, url: "img/smile5.png" }];
@@ -50,6 +50,24 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
     $scope.setEmojiValue = function(emojiID, $index) {
         $scope.EMA.mood = emojiID;
         $scope.selectedIndex = $index;
+    };
+
+    $scope.moreInfo = function(EMA) {
+        console.log(EMA);
+        LandmarkService.getLandmarkByID(EMA.landmarkID).then(function(l) {
+            console.log(l);
+        });
+
+        var myPopup = $ionicPopup.show({
+            template: '<div class="list"><span class="item item-avatar item-text-wrap"><img ng-src="' + EMA.weather.icon + '" />' + '<p><strong>Temperature:</strong> ' + Math.round(EMA.weather.temp) + '&deg; F</p><p><strong>Daylight:</strong> ' + Utils.formatDayLength(EMA.weather.sunset, EMA.weather.sunrise) + ' hours</p></span></div>',
+            title: 'My Vibe',
+            subTitle: 'Created: ' + Utils.formatDate(EMA.timestamp),
+            scope: $scope,
+            buttons: [{
+                text: 'Okay',
+                type: 'button-positive',
+            }]
+        });
     };
 
     // default login screen
@@ -174,10 +192,9 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
         LandmarkService.getLandmarkByID($stateParams.landmarkID).then(function(landmark) {
             $scope.landmark = landmark;
             UserService.getNearbyLandmarkIDs($rootScope.currentUser.uid).then(function(ls) {
-                if (ls.indexOf($stateParams.landmarkID) == -1){
+                if (ls.indexOf($stateParams.landmarkID) == -1) {
                     $scope.showCreate = false;
-                }
-                else {
+                } else {
                     $scope.showCreate = true;
                 }
             });
