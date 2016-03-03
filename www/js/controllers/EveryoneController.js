@@ -93,9 +93,18 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
 
+
+
                 $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-                
+
                 google.maps.event.addListenerOnce($scope.map, 'idle', function() {
+                    var currentMarker = new google.maps.Marker({
+                        position: latLng,
+                        map: $scope.map,
+                        icon: 'img/gpsloc.png',
+                        zIndex: google.maps.Marker.MAX_ZINDEX + 1
+                    });
+
                     var infoWindow = new google.maps.InfoWindow();
 
                     angular.forEach($scope.EMAs, function(value, key) {
@@ -107,7 +116,7 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
                                 icon: {
                                     path: google.maps.SymbolPath.CIRCLE,
                                     strokeColor: "red",
-                                    scale: 5
+                                    scale: 4
                                 },
                             });
 
@@ -118,7 +127,7 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
                                 icon: {
                                     path: google.maps.SymbolPath.CIRCLE,
                                     strokeColor: "green",
-                                    scale: 5
+                                    scale: 4
                                 },
                             });
 
