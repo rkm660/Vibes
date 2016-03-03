@@ -105,7 +105,8 @@ starter.service('UserService', function($q, LandmarkService, Utils) {
                 console.log("Successfully created user account with uid:", userData);
                 var newUserRef = ref.child("users").child(userData.uid).set({
                     email: credentials.email,
-                    lastNotiReceived: 0
+                    lastNotiReceived: 0,
+                    maxFreq : 4
                 }, function(error) {
                     if (error) {
                         console.log('Synchronization failed');
