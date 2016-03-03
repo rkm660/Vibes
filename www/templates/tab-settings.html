@@ -34,9 +34,10 @@
             <div class="item item-divider">
                 Notifications
             </div>
-            <label class="item item-input">
-                <span class="input-label">Max Sent Per Hour</span>
-                <input style="text-align:right" ng-change="changedMaxFreq(settings.maxFreq)" ng-model="settings.maxFreq" type="number">
+            <label class="item range range-calm">
+                <span class="input-label"># Per Hour ({{settings.maxFreq}})</span>
+                    <input style="text-align:right" ng-model="settings.maxFreq" ng-change="changedMaxFreq(settings.maxFreq)" type="range" min="0" max="10" value="4">
+
             </label>
         </div>
     </ion-content>
