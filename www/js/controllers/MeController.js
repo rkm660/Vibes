@@ -58,10 +58,9 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
     //iniitalize landmarks 
 
     var setLandmarks = function() {
-        var locRef = new Firebase("https://thevibe.firebaseio.com/Landmarks/");
-        $scope.landmarks = $firebaseArray(locRef);
-
-
+        UserService.getNearbyLandmarks($rootScope.currentUser.uid).then(function(ls) {
+            $scope.landmarks = ls;
+        });
     };
 
     // default login screen

@@ -172,7 +172,6 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
     $scope.$on("$ionicView.afterEnter", function(event) {
         LandmarkService.getLandmarkByID($stateParams.landmarkID).then(function(landmark) {
             $scope.landmark = landmark;
-            console.log($scope.landmark);
         });
     });
 });

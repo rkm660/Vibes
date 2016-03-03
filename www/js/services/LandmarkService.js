@@ -1,6 +1,15 @@
 starter.service('LandmarkService', function($q, $firebaseArray) {
     var self = this;
 
+    self.getLandmarks = function(){
+        var ref = new Firebase("https://thevibe.firebaseio.com/Landmarks");
+        var deferred = $q.defer();
+        ref.once("value", function(landmarks) {
+            deferred.resolve(landmarks.val());
+        });
+        return deferred.promise;
+    };
+
     self.getLandmarkByName = function(name) {
         var ref = new Firebase("https://thevibe.firebaseio.com/Landmarks");
         var deferred = $q.defer();
