@@ -1,4 +1,4 @@
-starter.controller('MeController', function($scope, $rootScope, $ionicModal, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService) {
+starter.controller('MeController', function($scope, $rootScope, $ionicModal, $ionicPopup, $firebaseArray, UserService, $cordovaBackgroundGeolocation, $cordovaGeolocation, $ionicPlatform, Utils, LandmarkService) {
 
     var ref, auth, mood;
     $scope.moods = [{ id: 1, url: "img/crying1.png" }, { id: 2, url: "img/crying2.png" }, { id: 3, url: "img/neutral.png" }, { id: 4, url: "img/smile4.png" }, { id: 5, url: "img/smile5.png" }];
@@ -39,8 +39,6 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
 
     };
 
-
-
     //iniitalize feed
 
     var setEMAs = function(uid) {
@@ -49,17 +47,35 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $fi
         $scope.EMAs = $firebaseArray(query);
     }
 
+    $scope.moreInfo = function(EMA) {
+        console.log(EMA);
+        LandmarkService.getLandmarkByID(EMA.landmarkID).then(function(l){
+            console.log(l);
+        });
+
+        var myPopup = $ionicPopup.show({
+            template: '<div class="list"><span class="item item-avatar item-text-wrap"><img ng-src="' + EMA.weather.icon + '" />' + '<p><strong>Temperature:</strong> ' + Math.round(EMA.weather.temp) + '&deg; F</p><p><strong>Daylight:</strong> '+ Utils.formatDayLength(EMA.weather.sunset,EMA.weather.sunrise) +' hours</p></span></div>',
+            title: 'My Vibe',
+            subTitle: 'Created: ' + Utils.formatDate(EMA.timestamp),
+            scope: $scope,
+            buttons: [{
+                text: 'Okay',
+                type: 'button-positive',
+            }]
+        });
+    };
+
     $scope.setEmojiValue = function(emojiID, $index) {
         $scope.EMA.mood = emojiID;
         $scope.selectedIndex = $index;
     };
 
-
-    //iniitalize landmarks 
-
     var setLandmarks = function() {
+        var locRef = new Firebase("https://thevibe.firebaseio.com/Landmarks/");
+        $scope.landmarks = $firebaseArray(locRef);
+
         UserService.getNearbyLandmarks($rootScope.currentUser.uid).then(function(ls) {
-            $scope.landmarks = ls;
+            $scope.nearbyLandmarks = ls;
         });
     };
 

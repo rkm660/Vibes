@@ -44,11 +44,11 @@ starter.controller('SettingsController', function($scope, $rootScope, $ionicModa
                     else {
                         $scope.settings.school = null;
                     }
-                    if (user.freq != null){
-                        $scope.settings.freq = user.freq;
+                    if (user.maxFreq != null){
+                        $scope.settings.maxFreq = user.maxFreq;
                     }
                     else {
-                        $scope.settings.freq = null;
+                        $scope.settings.maxFreq = null;
                     }
                 });
 
@@ -121,7 +121,6 @@ starter.controller('SettingsController', function($scope, $rootScope, $ionicModa
             maxFreq: freq
         });
     }
-
 
     $scope.$on("$ionicView.beforeEnter", function(event) {
         init();

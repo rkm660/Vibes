@@ -31,6 +31,15 @@ starter.service('Utils', function($q, $http, $rootScope) {
         }
     };
 
+    self.formatDate = function(timestamp) {
+        var date = new Date(timestamp);
+        return date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
+    };
+
+    self.formatDayLength = function(sunset, sunrise){
+        return ((sunset-sunrise)/60/60).toFixed(2);
+    };
+
     self.startBGWatch = function() {
         var bgGeo = window.BackgroundGeolocation;
         /**

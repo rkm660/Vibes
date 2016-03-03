@@ -5,12 +5,11 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list">
-            <a ng-swipe-left="removeEMA(EMA)" class="item item-text-wrap item-avatar" ng-repeat="EMA in EMAs" href="#">
-                <img ng-src="{{EMA.weather.icon}}"/>
-                <span class="emaText">"{{EMA.thought}}"</span>
-                <small> - <time am-time-ago="{{EMA.timestamp}}"></time></small>
-                <span ng-repeat="mood in moods">
-                <img class ="emaList" ng-class="{'redSmiley': EMA.mood <3, 'greenSmiley': EMA.mood >3, 'smileySelected': EMA.mood == 3}" ng-src="{{mood.url}}" ng-if="EMA.mood==mood.id" height="40"  />
+            <a ng-click="moreInfo(EMA)" ng-swipe-left="removeEMA(EMA)" class="item item-text-wrap item-avatar" ng-repeat="EMA in EMAs" href="#">
+                <img class ="emaList" ng-class="{'redSmiley': EMA.mood < 3, 'greenSmiley': EMA.mood > 3, 'smileySelected': EMA.mood == 3}" ng-src="{{moods[EMA.mood-1].url}}" height="40"  />
+                <span class="emaText">
+                    "{{EMA.thought}}"
+                        <small> - <time am-time-ago="{{EMA.timestamp}}"></time></small>
                 </span>
             </a>
         </div>
@@ -46,7 +45,7 @@
                         </div>
                         <select ng-model="EMA.landmark">
                             <option value="" selected></option>
-                            <option ng-value="landmark.$id" ng-repeat="landmark in landmarks">{{landmark.name}}</option>
+                            <option ng-value="landmark.$id" ng-repeat="landmark in landmarks" ng-if="nearbyLandmarks.indexOf(landmark.$id) != -1">{{landmark.name}}</option>
                         </select>
                     </label>
                     <button ng-disabled="createEMADisabled" class="button button-full button-positive" ng-click="createEMA(EMA)">Create</button>

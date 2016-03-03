@@ -49,7 +49,7 @@ starter.service('UserService', function($q, LandmarkService, Utils) {
                 for (id in landmarks) {
                     var landmarkLocation = { lat: landmarks[id].lat, lng: landmarks[id].lng };
                     if (Utils.withinRadius(userLocation, landmarkLocation, landmarks[id].radius + 50)){
-                        returnLandmarks.push(landmarks[id]);
+                        returnLandmarks.push(id);
                     }   
                 }
                 deferred.resolve(returnLandmarks);
