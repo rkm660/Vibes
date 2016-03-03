@@ -1,11 +1,40 @@
-starter.service('UserService', function($q) {
+starter.service('UserService', function($q, LandmarkService, Utils) {
     var self = this;
     var ref = new Firebase("https://thevibe.firebaseio.com/");
 
-    self.getUser = function(uid){
+
+    self.getUsers = function() {
+        var deferred = $q.defer();
+        var userRef = new Firebase("https://thevibe.firebaseio.com/users/");
+        userRef.once("value", function(users) {
+            deferred.resolve(users.val());
+        });
+        return deferred.promise;
+    };
+
+    self.getUsersWithinLandmark = function(name) {
+        var returnUsers = [];
+        var deferred = $q.defer();
+        self.getUsers().then(function(users) {
+            LandmarkService.getLandmarkDataByName(name).then(function(data) {
+                for (uid in users) {
+                    var userLocation = { lat: users[uid].BGLocation.lat, lng: users[uid].BGLocation.lng };
+                    var landmarkLocation = { lat: data.lat, lng: data.lng };
+                    if (Utils.withinRadius(userLocation, landmarkLocation, data.radius)) {
+                        returnUsers.push(uid);
+                    }
+                }
+                deferred.resolve(returnUsers);
+            });
+        });
+        return deferred.promise;
+    };
+
+
+    self.getUser = function(uid) {
         var deferred = $q.defer();
         var userRef = new Firebase("https://thevibe.firebaseio.com/users/" + uid);
-        userRef.once("value", function(user){
+        userRef.once("value", function(user) {
             deferred.resolve(user.val());
         });
         return deferred.promise;
@@ -39,8 +68,8 @@ starter.service('UserService', function($q) {
             } else {
                 console.log("Successfully created user account with uid:", userData);
                 var newUserRef = ref.child("users").child(userData.uid).set({
-                    email : credentials.email,
-                    lastNotiReceived : 0
+                    email: credentials.email,
+                    lastNotiReceived: 0
                 }, function(error) {
                     if (error) {
                         console.log('Synchronization failed');

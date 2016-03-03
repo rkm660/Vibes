@@ -48,17 +48,6 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
                 $rootScope.currentUser = authLogin;
                 setEMAs($rootScope.currentUser.uid);
                 setLandmarks();
-                $ionicPlatform.ready(function() {
-                    try {
-                        startBGWatch();
-
-                    } catch (err) {
-                        alert("There was an error initializing background Geolocation, please restart the app.");
-                        console.log(err);
-                    }
-                    $scope.refreshMap();
-
-                });
             }
             if (errorLogin) {
                 alert(errorLogin);
@@ -131,7 +120,7 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
                                     scale: 5
                                 },
                             });
-                           
+
                         }
                     });
 
@@ -163,9 +152,9 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
                                 center: center,
                                 radius: landmark.radius
                             });
-                            
+
                             var infoString = "<div class=\"list\">" +
-                                "<a class=\"item\" ng-click=\"goToDetail('"+landmark.$id+"')\">" +
+                                "<a class=\"item\" ng-click=\"goToDetail('" + landmark.$id + "')\">" +
                                 "<span>Landmark: " + landmark.name + "</span><br>" +
                                 "<span>Average Vibe: " + mood + "</span><br>" +
                                 "<span>Num Responses: " + emasLength + "</span>" +
@@ -197,53 +186,12 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
             });
     };
 
-    $scope.goToDetail = function(id){
+    $scope.goToDetail = function(id) {
         console.log(id);
-        $window.location.assign('#/tab/us/'+id);
+        $window.location.assign('#/tab/us/' + id);
     }
 
-    var startBGWatch = function() {
-        var bgGeo = window.BackgroundGeolocation;
-        /**
-         * This callback will be executed every time a geolocation is recorded in the background.
-         */
-        var callbackFn = function(location, taskId) {
-            var coords = location.coords;
-            var lat = coords.latitude;
-            var lng = coords.longitude;
-            var bgRef = new Firebase("https://thevibe.firebaseio.com/users/" + $rootScope.currentUser.uid + "/BGLocation/");
-            bgRef.set({
-                lat: lat,
-                lng: lng,
-                timestamp: Firebase.ServerValue.TIMESTAMP
-            }, function(error) {
-                console.log("in bg callback");
-                bgGeo.finish(taskId); // <-- execute #finish when your work in callbackFn is complete
-            });
 
-        };
-
-        var failureFn = function(error) {
-            console.log('BackgroundGeoLocation error');
-        };
-
-        // BackgroundGeoLocation is highly configurable.
-        bgGeo.configure(callbackFn, failureFn, {
-            // Geolocation config
-            desiredAccuracy: 0,
-            stationaryRadius: 10,
-            preventSuspend: true,
-            heartbeatInterval: 30,
-            distanceFilter: 0,
-            activityRecognitionInterval: 0,
-            activityType: 'Other',
-            debug: false
-
-        });
-
-        // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
-        bgGeo.start();
-    };
 
     $scope.$on("$ionicView.afterEnter", function(event) {
         init();
@@ -251,15 +199,5 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
 
     })
 
-    $scope.$on("$ionicView.loaded", function(event) {
-        $ionicPlatform.ready(function() {
-            try {
-                startBGWatch();
-            } catch (err) {
-                alert("There was an error with background geolocation, please change location settings and restart the app.");
-                console.log(err);
-            }
 
-        });
-    })
 });

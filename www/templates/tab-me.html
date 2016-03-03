@@ -5,7 +5,7 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list">
-            <a ng-swipe-left="removeEMA(EMA)" class="item item-avatar" ng-repeat="EMA in EMAs" href="#">
+            <a ng-swipe-left="removeEMA(EMA)" class="item item-text-wrap item-avatar" ng-repeat="EMA in EMAs" href="#">
                 <img ng-src="{{EMA.weather.icon}}"/>
                 <span class="emaText">"{{EMA.thought}}"</span>
                 <small> - <time am-time-ago="{{EMA.timestamp}}"></time></small>
@@ -19,7 +19,7 @@
 <script id="templates/createEMA.html" type="text/ng-template">
     <ion-modal-view>
         <ion-header-bar class="bar bar-header bar-positive">
-            <h1 class="title">New EMA</h1>
+            <h1 class="title">New Vibe</h1>
             <button class="button button-clear button-primary" ng-click="emaModal.hide()">Cancel</button>
         </ion-header-bar>
         <ion-content class="padding">

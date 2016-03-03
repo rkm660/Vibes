@@ -16,6 +16,21 @@ starter.service('LandmarkService', function($q, $firebaseArray) {
         return deferred.promise;
     };
 
+    self.getLandmarkDataByName = function(name) {
+        var ref = new Firebase("https://thevibe.firebaseio.com/Landmarks");
+        var deferred = $q.defer();
+        ref.once("value", function(landmarks) {
+            landmarks.forEach(function(l) {
+                var key = l.key();
+                var landmark = l.val();
+                if (landmark.name === name) {
+                    deferred.resolve(landmark);
+                }
+            });
+        });
+        return deferred.promise;
+    };
+
     self.getLandmarkByID = function(ID) {
         var ref = new Firebase("https://thevibe.firebaseio.com/Landmarks");
         var deferred = $q.defer();

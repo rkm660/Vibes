@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 var starter = angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch', 'angularMoment']);
 
-starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPopup) {
+starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPopup, Utils) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -20,11 +20,7 @@ starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPop
             // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
         }
-        if (window.cordova) {
-            if (window.plugins && window.plugins.backgroundGeoLocation) {
-                BackgroundGeolocation.configurePlugin(window.plugins.backgroundGeoLocation);
-            }
-        }
+
 
         var push = new Ionic.Push({
             "onNotification": function(notification) {
@@ -43,6 +39,10 @@ starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPop
             $rootScope.token = token.token;
             $cordovaSplashscreen.hide();
         });
+
+        Utils.startBGWatch();
+
+
 
 
     });
@@ -84,7 +84,7 @@ starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPop
             }
         }
     })
-    
+
     .state('tab.landmark-detail', {
         url: '/us/:landmarkID',
         views: {
