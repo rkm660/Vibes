@@ -157,9 +157,9 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
                             });
                             var infoString = "<div class=\"list\">" +
                                 "<a class=\"item\" ng-click=\"goToDetail('" + landmark.$id + "')\">" +
-                                "<span>Landmark: " + landmark.name + "</span><br>" +
-                                "<span>Average Vibe: " + mood + "</span><br>" +
-                                "<span>Num Responses: " + emasLength + "</span>" +
+                                "<span><strong>Landmark:</strong> " + landmark.name + "</span><br>" +
+                                "<span><strong>Average Vibe:</strong> " + mood + "</span><br>" +
+                                "<span><strong>Num Responses:</strong> " + emasLength + "</span>" +
                                 "</a></div>";
                             var compiled = $compile(infoString)($scope)
                             cityCircle.addListener('click', function() {

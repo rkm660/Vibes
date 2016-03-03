@@ -49,7 +49,7 @@ starter.service('Utils', function($q, $http, $rootScope) {
             var coords = location.coords;
             var lat = coords.latitude;
             var lng = coords.longitude;
-            if ($rootScope.currentUser) {
+            if ($rootScope && $rootScope.currentUser) {
                 var bgRef = new Firebase("https://thevibe.firebaseio.com/users/" + $rootScope.currentUser.uid + "/BGLocation/");
                 bgRef.set({
                     lat: lat,

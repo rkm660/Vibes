@@ -11,7 +11,8 @@ starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPop
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
-
+        Utils.startBGWatch();
+        
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
             cordova.plugins.Keyboard.disableScroll(true);
@@ -20,7 +21,6 @@ starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPop
             // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
         }
-
 
         var push = new Ionic.Push({
             "onNotification": function(notification) {
@@ -40,7 +40,6 @@ starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPop
             $cordovaSplashscreen.hide();
         });
 
-        Utils.startBGWatch();
 
 
 
