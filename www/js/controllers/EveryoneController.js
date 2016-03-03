@@ -93,8 +93,6 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
 
-
-
                 $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
                 google.maps.event.addListenerOnce($scope.map, 'idle', function() {
@@ -204,7 +202,7 @@ starter.controller('EveryoneController', function($scope, $compile, $rootScope, 
 
 
 
-    $scope.$on("$ionicView.afterEnter", function(event) {
+    $scope.$on("$ionicView.beforeEnter", function(event) {
         init();
     });
 
