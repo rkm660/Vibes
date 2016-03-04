@@ -142,7 +142,6 @@ starter.controller('LandmarkController', function($scope, $rootScope, $ionicModa
                     if (ls.indexOf($stateParams.landmarkID) == -1) {
                         $scope.showCreate = false;
                     } else {
-                        console.log("yeah");
                         $scope.showCreate = true;
                     }
                 });

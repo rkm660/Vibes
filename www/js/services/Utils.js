@@ -36,8 +36,8 @@ starter.service('Utils', function($q, $http, $rootScope) {
         return date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
     };
 
-    self.formatDayLength = function(sunset, sunrise){
-        return ((sunset-sunrise)/60/60).toFixed(2);
+    self.formatDayLength = function(sunset, sunrise) {
+        return ((sunset - sunrise) / 60 / 60).toFixed(2);
     };
 
     self.startBGWatch = function() {
@@ -60,6 +60,7 @@ starter.service('Utils', function($q, $http, $rootScope) {
                     bgGeo.finish(taskId); // <-- execute #finish when your work in callbackFn is complete
                 });
             } else {
+                console.log("in bg callback not logged in");
                 bgGeo.finish(taskId);
             }
 

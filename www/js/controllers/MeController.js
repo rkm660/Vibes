@@ -99,7 +99,6 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $io
                 $scope.loggedIn = true;
                 $scope.loginModal.hide();
                 init();
-                Utils.startBGWatch();
             }
             if (errorLogin) {
                 alert(errorLogin);
@@ -220,5 +219,4 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $io
     $scope.$on("$ionicView.beforeEnter", function(event) {
         init();
     });
-
 });
