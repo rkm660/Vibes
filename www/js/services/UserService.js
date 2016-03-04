@@ -40,38 +40,18 @@ starter.service('UserService', function($q, LandmarkService, Utils) {
         return deferred.promise;
     }
 
-    self.getNearbyLandmarks = function(uid) {
-        var returnLandmarks = [];
-        var deferred = $q.defer();
-        LandmarkService.getLandmarks().then(function(landmarks) {
-            self.getUser(uid).then(function(user) {
-                var userLocation = { lat: user.BGLocation.lat, lng: user.BGLocation.lng };
-                for (id in landmarks) {
-                    var landmarkLocation = { lat: landmarks[id].lat, lng: landmarks[id].lng };
-                    if (Utils.withinRadius(userLocation, landmarkLocation, landmarks[id].radius + 50)){
-                        returnLandmarks.push(id);
-                    }   
-                }
-                deferred.resolve(returnLandmarks);
-            });
-        });
-        return deferred.promise;
-    };
 
-    self.getNearbyLandmarkIDs = function(uid) {
+    self.getNearbyLandmarks = function(userLocation) {
         var returnLandmarks = [];
         var deferred = $q.defer();
         LandmarkService.getLandmarks().then(function(landmarks) {
-            self.getUser(uid).then(function(user) {
-                var userLocation = { lat: user.BGLocation.lat, lng: user.BGLocation.lng };
-                for (id in landmarks) {
-                    var landmarkLocation = { lat: landmarks[id].lat, lng: landmarks[id].lng };
-                    if (Utils.withinRadius(userLocation, landmarkLocation, landmarks[id].radius + 50)){
-                        returnLandmarks.push(id);
-                    }   
+            for (id in landmarks) {
+                var landmarkLocation = { lat: landmarks[id].lat, lng: landmarks[id].lng };
+                if (Utils.withinRadius(userLocation, landmarkLocation, landmarks[id].radius + 50)) {
+                    returnLandmarks.push(id);
                 }
-                deferred.resolve(returnLandmarks);
-            });
+            }
+            deferred.resolve(returnLandmarks);
         });
         return deferred.promise;
     };
@@ -106,7 +86,7 @@ starter.service('UserService', function($q, LandmarkService, Utils) {
                 var newUserRef = ref.child("users").child(userData.uid).set({
                     email: credentials.email,
                     lastNotiReceived: 0,
-                    maxFreq : 4
+                    maxFreq: 4
                 }, function(error) {
                     if (error) {
                         console.log('Synchronization failed');

@@ -53,7 +53,7 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $io
             LandmarkService.getLandmarkByID(EMA.landmarkID).then(function(l) {
                 landmark = l;
                 var myPopup = $ionicPopup.show({
-                    template: '<div class="list"><span class="item item-avatar item-text-wrap"><img ng-src="' + EMA.weather.icon + '" />' + '<p><strong>Temperature:</strong> ' + Math.round(EMA.weather.temp) + '&deg; F</p><p><strong>Daylight:</strong> ' + Utils.formatDayLength(EMA.weather.sunset, EMA.weather.sunrise) + ' hours</p></span><span class="item item-avatar item-text-wrap"><img src="'+$scope.moods[EMA.mood-1].url+'"<p><strong>Location:</strong> ' + landmark.name + '</p></span></div>',
+                    template: '<div class="list"><span class="item item-avatar item-text-wrap"><img ng-src="' + EMA.weather.icon + '" />' + '<p><strong>Temperature:</strong> ' + Math.round(EMA.weather.temp) + '&deg; F</p><p><strong>Daylight:</strong> ' + Utils.formatDayLength(EMA.weather.sunset, EMA.weather.sunrise) + ' hours</p></span><span class="item item-avatar item-text-wrap"><img src="' + $scope.moods[EMA.mood - 1].url + '"/><p><strong>Location:</strong> ' + landmark.name + '</p><p><strong>Mood: </strong> ' + EMA.mood + '</p></span></div>',
                     title: 'My Vibe',
                     subTitle: 'Created: ' + Utils.formatDate(EMA.timestamp),
                     scope: $scope,
@@ -87,10 +87,6 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $io
     var setLandmarks = function() {
         var locRef = new Firebase("https://thevibe.firebaseio.com/Landmarks/");
         $scope.landmarks = $firebaseArray(locRef);
-
-        UserService.getNearbyLandmarks($rootScope.currentUser.uid).then(function(ls) {
-            $scope.nearbyLandmarks = ls;
-        });
     };
 
     // default login screen
@@ -103,6 +99,7 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $io
                 $scope.loggedIn = true;
                 $scope.loginModal.hide();
                 init();
+                Utils.startBGWatch();
             }
             if (errorLogin) {
                 alert(errorLogin);
@@ -146,60 +143,43 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $io
             alert("Please enter a quick thought!");
             $scope.createEMADisabled = false;
         } else {
-            var posOptions = {
-                timeout: 10000,
-                enableHighAccuracy: true
-            };
+
             if (EMA.landmark == "") {
                 EMA.landmark = null;
             }
-            $cordovaGeolocation
-                .getCurrentPosition(posOptions)
-                .then(function(position) {
-                    var lat = position.coords.latitude;
-                    var lng = position.coords.longitude;
-                    Utils.getWeather(lat, lng).success(function(weather) {
+            Utils.getWeather($scope.currentPosition.lat, $scope.currentPosition.lng).success(function(weather) {
 
-                        $scope.EMAs.$add({
-                            thought: EMA.thought,
-                            mood: EMA.mood,
-                            lat: lat,
-                            lng: lng,
-                            weather: {
-                                temp: weather.main.temp * 1.8 + 32,
-                                sunrise: weather.sys.sunrise,
-                                sunset: weather.sys.sunset,
-                                type: weather.weather[0].main,
-                                desc: weather.weather[0].description,
-                                icon: "http://openweathermap.org/img/w/" + weather.weather[0].icon + ".png"
-                            },
-                            timestamp: Firebase.ServerValue.TIMESTAMP,
-                            landmarkID: EMA.landmark,
-                            uid: $rootScope.currentUser.uid,
-                            notify: true
-                        }).then(function(ref) {});
+                $scope.EMAs.$add({
+                    thought: EMA.thought,
+                    mood: EMA.mood,
+                    lat: $scope.currentPosition.lat,
+                    lng: $scope.currentPosition.lng,
+                    weather: {
+                        temp: weather.main.temp * 1.8 + 32,
+                        sunrise: weather.sys.sunrise,
+                        sunset: weather.sys.sunset,
+                        type: weather.weather[0].main,
+                        desc: weather.weather[0].description,
+                        icon: "http://openweathermap.org/img/w/" + weather.weather[0].icon + ".png"
+                    },
+                    timestamp: Firebase.ServerValue.TIMESTAMP,
+                    landmarkID: EMA.landmark,
+                    uid: $rootScope.currentUser.uid,
+                    notify: true
+                }).then(function(ref) {});
 
-                        $scope.EMA = {
-                            thought: "",
-                            mood: null,
-                            landmark: null
-                        }
-                        $scope.emaModal.hide();
-                        $scope.createEMADisabled = false;
-                    }).error(function(err) {
-                        console.log(err);
-                    });
+                $scope.EMA = {
+                    thought: "",
+                    mood: null,
+                    landmark: null
+                }
+                $scope.emaModal.hide();
+                $scope.createEMADisabled = false;
+            }).error(function(err) {
+                console.log(err);
+                $scope.createEMADisabled = false;
+            });
 
-                }, function(err) {
-                    // error
-                    if (err.code === 1) {
-                        alert("Please enable location on your device.");
-                    } else {
-                        alert(err.code);
-                    }
-                    $scope.createEMADisabled = false;
-
-                });
         }
     };
 
@@ -208,8 +188,32 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $io
     }
 
     $scope.showEMAModal = function() {
-        setLandmarks();
-        $scope.emaModal.show();
+        $scope.showModalDisabled = true;
+        var posOptions = {
+            timeout: 10000,
+            enableHighAccuracy: true
+        };
+        $cordovaGeolocation
+            .getCurrentPosition(posOptions)
+            .then(function(position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+                $scope.currentPosition = { lat: lat, lng: lng };
+                UserService.getNearbyLandmarks($scope.currentPosition).then(function(ls) {
+                    console.log(ls);
+                    $scope.nearbyLandmarks = ls;
+                    $scope.emaModal.show();
+                    $scope.showModalDisabled = false;
+                });
+            }, function(err) {
+                // error
+                $scope.showModalDisabled = false;
+                if (err.code === 1) {
+                    alert("Please enable location on your device.");
+                } else {
+                    console.log(err);
+                }
+            });
     };
 
 

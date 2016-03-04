@@ -7,11 +7,10 @@
 // 'starter.controllers' is found in controllers.js
 var starter = angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch', 'angularMoment']);
 
-starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPopup, Utils) {
+starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPopup) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
-        Utils.startBGWatch();
         
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
