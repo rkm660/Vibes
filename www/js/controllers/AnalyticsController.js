@@ -2,6 +2,11 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
 
     $scope.labels = ["Happy","Sad","Depressed","Ecstatic","Blah"];
     $scope.values = [];
+    $scope.labels1 = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    $scope.series = ['EMAs'];
+    $scope.data = [[]];
+    $scope.showFrequency = false;
+
     //init
     var initialize = function() {
          
@@ -36,12 +41,24 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
         var emaRef = new Firebase("https://thevibe.firebaseio.com/EMAs/");
         emaRef.orderByChild("uid").equalTo(uid).on('value', function(snapshot){
            $scope.values = [];
+           $scope.data = [[]];
            var d = 0;
            var s = 0;
            var b = 0;
            var h = 0;
            var e = 0;  
-            angular.forEach(snapshot.val(), function(EMA){
+           var sunday = 0;
+           var monday = 0;
+           var tuesday = 0;
+           var wednesday = 0;
+           var thursday = 0;
+           var friday = 0;
+           var saturday = 0;
+           var today = new Date();
+           angular.forEach(snapshot.val(), function(EMA){
+                var myDate = new Date(EMA.timestamp);
+                var day=myDate.getDay();
+                
                 switch(EMA.mood){
                     case 1: d++;break;
                     case 2: s++;break;
@@ -49,12 +66,38 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
                     case 4: h++;break;
                     case 5: e++;break;
                 }
+                if(today.getFullYear() == myDate.getFullYear() && 
+                        today.getMonth() == myDate.getMonth() &&
+                             Math.abs(today.getDate() - myDate.getDate()) < 7){
+                switch(day){
+                    case 0: sunday++;break;
+                    case 1: monday++;break;
+                    case 2: tuesday++;break;
+                    case 3: wednesday++;break;
+                    case 4: thursday++;break;
+                    case 5: friday++;break;
+                    case 6: saturday++;break;
+                    }
+                }
             });
             $scope.values.push(h);
             $scope.values.push(s);
             $scope.values.push(d);
             $scope.values.push(e);
             $scope.values.push(b);
+
+           var todaysDay = today.getDay();
+
+            $scope.labels1[todaysDay] = $scope.labels1[todaysDay] +  " (Today)";
+            //alert(todaysDay);
+            $scope.data[0].push(sunday);
+            $scope.data[0].push(monday);
+            $scope.data[0].push(tuesday);
+            $scope.data[0].push(wednesday);
+            $scope.data[0].push(thursday);
+            $scope.data[0].push(friday);
+            $scope.data[0].push(saturday);
+
         }); 
             
     }
