@@ -7,8 +7,8 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
     $scope.data = [[]];
     $scope.showFrequency = false;
     $scope.options = {animationEasing : 'easeOutBounce'};
-     $scope.type = 'PolarArea';
-     $scope.text = "Pie Chart";
+     $scope.type = 'Pie';
+     $scope.text = "Radar Chart";
     $scope.toggleChart = function () {
       $scope.type = $scope.type === 'PolarArea' ?
         'Pie' : 'PolarArea';
