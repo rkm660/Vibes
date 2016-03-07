@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-var starter = angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch', 'angularMoment']);
+var starter = angular.module('starter', ['ionic', 'ionic.service.core', 'firebase', 'ngCordova', 'ngTouch', 'angularMoment', 'chart.js']);
 
 starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPopup, Utils) {
     $ionicPlatform.ready(function() {
@@ -104,6 +104,16 @@ starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPop
         }
     })
 
+    .state('tab.analytics', {
+        url: '/analytics',
+        cache:false,
+        views: {
+            'tab-analytics': {
+                templateUrl: 'templates/tab-analytics.html',
+                controller: 'AnalyticsController'
+            }
+        }
+    })
 
     ;
 
