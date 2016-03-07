@@ -1,10 +1,16 @@
 <ion-view view-title="Analytics">
 <ion-content>
-<ion-toggle ng-model="showFrequency" toggle-class="toggle-calm">Frequency of your EMAs over the past week</ion-toggle>
+<ion-toggle ng-model="showFrequency" toggle-class="toggle-calm">Your EMA Timeline (past week)</ion-toggle>
 <div ng-if="values.length && !showFrequency">
-<canvas id="doughnut" class="chart chart-doughnut"
+<!-- <canvas id="doughnut" class="chart chart-doughnut"
+  chart-data="values" chart-labels="labels" chart-legend="labels" chart-options="options">
+</canvas> -->
+<canvas id="base" class="chart-base" chart-type="type"
   chart-data="values" chart-labels="labels" chart-legend="labels">
 </canvas>
+<button class="button button-large button-positive" ng-click="toggleChart()">
+   {{text}}
+</button>
 </div>
 <div ng-if="data.length && showFrequency">
 <canvas id="line" class="chart chart-line" chart-data="data"

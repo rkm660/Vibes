@@ -6,6 +6,14 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
     $scope.series = ['EMAs'];
     $scope.data = [[]];
     $scope.showFrequency = false;
+    $scope.options = {animationEasing : 'easeOutBounce'};
+     $scope.type = 'PolarArea';
+     $scope.text = "Pie Chart";
+    $scope.toggleChart = function () {
+      $scope.type = $scope.type === 'PolarArea' ?
+        'Pie' : 'PolarArea';
+        $scope.text = $scope.text === 'Pie Chart'? 'Radar Chart' : 'Pie Chart';
+    };
 
     //init
     var initialize = function() {
@@ -55,6 +63,7 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
            var friday = 0;
            var saturday = 0;
            var today = new Date();
+           var todaysDay = today.getDay();
            angular.forEach(snapshot.val(), function(EMA){
                 var myDate = new Date(EMA.timestamp);
                 var day=myDate.getDay();
@@ -84,12 +93,9 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
             $scope.values.push(s);
             $scope.values.push(d);
             $scope.values.push(e);
-            $scope.values.push(b);
-
-           var todaysDay = today.getDay();
+            $scope.values.push(b);     
 
             $scope.labels1[todaysDay] = $scope.labels1[todaysDay] +  " (Today)";
-            //alert(todaysDay);
             $scope.data[0].push(sunday);
             $scope.data[0].push(monday);
             $scope.data[0].push(tuesday);
