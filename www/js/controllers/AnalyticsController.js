@@ -50,11 +50,15 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
         emaRef.orderByChild("uid").equalTo(uid).on('value', function(snapshot){
            $scope.values = [];
            $scope.data = [[]];
+           
+           //Piechart moods
            var d = 0;
            var s = 0;
            var b = 0;
            var h = 0;
            var e = 0;  
+
+           //EMA Timeline (past week)
            var sunday = 0;
            var monday = 0;
            var tuesday = 0;
@@ -62,6 +66,8 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
            var thursday = 0;
            var friday = 0;
            var saturday = 0;
+
+           //Weekly Depression moods
            var sd = 0;
            var md = 0;
            var tud = 0;
@@ -70,6 +76,7 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
            var fd = 0;
            var sad = 0;
 
+           //Weekly Sad moods
            var ss = 0;
            var ms = 0;
            var tus = 0;
@@ -78,6 +85,7 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
            var fs = 0;
            var sas = 0;
 
+           //Weekly Blah moods
            var sb = 0;
            var mb = 0;
            var tub = 0;
@@ -86,6 +94,7 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
            var fb = 0;
            var sab = 0;
 
+           //Weekly Happy moods
            var sh = 0;
            var mh = 0;
            var tuh = 0;
@@ -94,6 +103,7 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
            var fh = 0;
            var sah = 0;
 
+           //Weekly Ecstatic moods
            var se = 0;
            var me = 0;
            var tue = 0;
