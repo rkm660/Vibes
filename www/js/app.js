@@ -110,7 +110,7 @@ starter.run(function($ionicPlatform, $rootScope, $cordovaSplashscreen, $ionicPop
         views: {
             'tab-analytics': {
                 templateUrl: 'templates/tab-analytics.html',
-                controller: 'AnalyticsController'
+                controller: 'SelfAnalysisController'
             }
         }
     })

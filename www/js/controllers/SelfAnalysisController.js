@@ -1,4 +1,4 @@
-starter.controller('AnalyticsController', function($scope, $rootScope, $firebaseArray, $ionicModal, $ionicHistory) {
+starter.controller('SelfAnalysisController', function($scope, $rootScope, $firebaseArray, $ionicModal, $ionicHistory) {
 
     $scope.labels = ["Happy","Sad","Depressed","Ecstatic","Blah"];
     $scope.values = [];
@@ -50,7 +50,7 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
         emaRef.orderByChild("uid").equalTo(uid).on('value', function(snapshot){
            $scope.values = [];
            $scope.data = [[]];
-           
+
            //Piechart moods
            var d = 0;
            var s = 0;
