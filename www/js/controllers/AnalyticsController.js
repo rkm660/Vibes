@@ -3,7 +3,7 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
     $scope.labels = ["Happy","Sad","Depressed","Ecstatic","Blah"];
     $scope.values = [];
     $scope.labels1 = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    $scope.series = ['Total EMAs per Day','Sad', 'Depressed', 'Ecstatic','Blah', 'Happy'];
+    $scope.series = ['Total EMAs','Sad', 'Depressed', 'Ecstatic','Blah', 'Happy'];
     $scope.data = [[]];
     $scope.showFrequency = false;
     $scope.options = {animationEasing : 'easeOutBounce'};
