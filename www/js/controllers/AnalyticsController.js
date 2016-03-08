@@ -3,7 +3,7 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
     $scope.labels = ["Happy","Sad","Depressed","Ecstatic","Blah"];
     $scope.values = [];
     $scope.labels1 = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    $scope.series = ['EMAs'];
+    $scope.series = ['Total EMAs per Day','Sad', 'Depressed', 'Ecstatic','Blah', 'Happy'];
     $scope.data = [[]];
     $scope.showFrequency = false;
     $scope.options = {animationEasing : 'easeOutBounce'};
@@ -62,6 +62,47 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
            var thursday = 0;
            var friday = 0;
            var saturday = 0;
+           var sd = 0;
+           var md = 0;
+           var tud = 0;
+           var wd = 0;
+           var thd = 0;
+           var fd = 0;
+           var sad = 0;
+
+           var ss = 0;
+           var ms = 0;
+           var tus = 0;
+           var ws = 0;
+           var ths = 0;
+           var fs = 0;
+           var sas = 0;
+
+           var sb = 0;
+           var mb = 0;
+           var tub = 0;
+           var wb = 0;
+           var thb = 0;
+           var fb = 0;
+           var sab = 0;
+
+           var sh = 0;
+           var mh = 0;
+           var tuh = 0;
+           var wh = 0;
+           var thh = 0;
+           var fh = 0;
+           var sah = 0;
+
+           var se = 0;
+           var me = 0;
+           var tue = 0;
+           var we = 0;
+           var the = 0;
+           var fe = 0;
+           var sae = 0;
+
+
            var today = new Date();
            var todaysDay = today.getDay();
            angular.forEach(snapshot.val(), function(EMA){
@@ -79,13 +120,67 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
                         today.getMonth() == myDate.getMonth() &&
                              Math.abs(today.getDate() - myDate.getDate()) < 7){
                 switch(day){
-                    case 0: sunday++;break;
-                    case 1: monday++;break;
-                    case 2: tuesday++;break;
-                    case 3: wednesday++;break;
-                    case 4: thursday++;break;
-                    case 5: friday++;break;
-                    case 6: saturday++;break;
+                    case 0: sunday++;
+                               switch(EMA.mood){
+                                    case 1: sd++;break;
+                                    case 2: ss++;break;
+                                    case 3: sb++;break;
+                                    case 4: sh++;break;
+                                    case 5: se++;break;
+                                    }
+                                break;
+                    case 1: monday++;
+                              switch(EMA.mood){
+                                    case 1: md++;break;
+                                    case 2: ms++;break;
+                                    case 3: mb++;break;
+                                    case 4: mh++;break;
+                                    case 5: me++;break;
+                                    
+                                }break;
+                    case 2: tuesday++;
+                                  switch(EMA.mood){
+                                    case 1: tud++;break;
+                                    case 2: tus++;break;
+                                    case 3: tub++;break;
+                                    case 4: tuh++;break;
+                                    case 5: tue++;break;
+                                    }break;
+                    case 3: wednesday++;
+                                  switch(EMA.mood){
+                                    case 1: wd++;break;
+                                    case 2: ws++;break;
+                                    case 3: wb++;break;
+                                    case 4: wh++;break;
+                                    case 5: we++;break;
+                                   
+                                }break;
+                    case 4: thursday++;
+                                  switch(EMA.mood){
+                                    case 1: thd++;break;
+                                    case 2: ths++;break;
+                                    case 3: thb++;break;
+                                    case 4: thh++;break;
+                                    case 5: the++;break;
+                                    
+                                }break;
+                    case 5: friday++;
+                                switch(EMA.mood){
+                                    case 1: fd++;break;
+                                    case 2: fs++;break;
+                                    case 3: fb++;break;
+                                    case 4: fh++;break;
+                                    case 5: fe++;break;
+                                 }break;
+                    case 6: saturday++;
+                      switch(EMA.mood){
+                                    case 1: sad++;break;
+                                    case 2: sas++;break;
+                                    case 3: sab++;break;
+                                    case 4: sah++;break;
+                                    case 5: sae++;break;
+                                    
+                            }break;
                     }
                 }
             });
@@ -96,6 +191,13 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
             $scope.values.push(b);     
 
             $scope.labels1[todaysDay] = $scope.labels1[todaysDay] +  " (Today)";
+            $scope.data[0] = [];
+            $scope.data[1] = [];
+            $scope.data[2] = [];
+            $scope.data[3] = [];
+            $scope.data[4] = [];
+            $scope.data[5] = [];
+
             $scope.data[0].push(sunday);
             $scope.data[0].push(monday);
             $scope.data[0].push(tuesday);
@@ -103,6 +205,47 @@ starter.controller('AnalyticsController', function($scope, $rootScope, $firebase
             $scope.data[0].push(thursday);
             $scope.data[0].push(friday);
             $scope.data[0].push(saturday);
+
+
+            $scope.data[1].push(ss);
+            $scope.data[1].push(ms);
+            $scope.data[1].push(tus);
+            $scope.data[1].push(ws);
+            $scope.data[1].push(ths);
+            $scope.data[1].push(fs);
+            $scope.data[1].push(sas);
+
+            $scope.data[2].push(sd);
+            $scope.data[2].push(md);
+            $scope.data[2].push(tud);
+            $scope.data[2].push(wd);
+            $scope.data[2].push(thd);
+            $scope.data[2].push(fd);
+            $scope.data[2].push(sad);
+            
+            $scope.data[3].push(se);
+            $scope.data[3].push(me);
+            $scope.data[3].push(tue);
+            $scope.data[3].push(we);
+            $scope.data[3].push(the);
+            $scope.data[3].push(fe);
+            $scope.data[3].push(sae);
+
+            $scope.data[4].push(sb);
+            $scope.data[4].push(mb);
+            $scope.data[4].push(tub);
+            $scope.data[4].push(wb);
+            $scope.data[4].push(thb);
+            $scope.data[4].push(fb);
+            $scope.data[4].push(sab);
+
+            $scope.data[5].push(sh);
+            $scope.data[5].push(mh);
+            $scope.data[5].push(tuh);
+            $scope.data[5].push(wh);
+            $scope.data[5].push(thh);
+            $scope.data[5].push(fh);
+            $scope.data[5].push(sah);
 
         }); 
             
