@@ -2,7 +2,7 @@ starter.controller('SelfAnalysisController', function($scope, $rootScope, $fireb
 
     $scope.labels = ["Happy","Sad","Depressed","Ecstatic","Blah"];
     $scope.values = [];
-    $scope.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     $scope.labels1 = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     $scope.series = ['Total EMAs','Sad', 'Depressed', 'Ecstatic','Blah', 'Happy'];
     $scope.data = [[]];
@@ -37,7 +37,6 @@ starter.controller('SelfAnalysisController', function($scope, $rootScope, $fireb
                 }
                 $scope.loggedIn = true;
                 getEMAs($rootScope.currentUser.uid);
-                setLandmarks();
             }
         });
     };
@@ -199,7 +198,7 @@ starter.controller('SelfAnalysisController', function($scope, $rootScope, $fireb
             $scope.values.push(e);
             $scope.values.push(b);     
 
-            $scope.labels1[todaysDay] =  $scope.days[todaysDay] + "(Today)";
+            $scope.labels1[todaysDay] =  days[todaysDay] + " (Today)";
             $scope.data[0] = [];
             $scope.data[1] = [];
             $scope.data[2] = [];
@@ -215,7 +214,7 @@ starter.controller('SelfAnalysisController', function($scope, $rootScope, $fireb
             $scope.data[0].push(friday);
             $scope.data[0].push(saturday);
 
-
+            //Sad data for the past week
             $scope.data[1].push(ss);
             $scope.data[1].push(ms);
             $scope.data[1].push(tus);
@@ -224,6 +223,7 @@ starter.controller('SelfAnalysisController', function($scope, $rootScope, $fireb
             $scope.data[1].push(fs);
             $scope.data[1].push(sas);
 
+            //Depressed data for the past week
             $scope.data[2].push(sd);
             $scope.data[2].push(md);
             $scope.data[2].push(tud);
@@ -232,6 +232,7 @@ starter.controller('SelfAnalysisController', function($scope, $rootScope, $fireb
             $scope.data[2].push(fd);
             $scope.data[2].push(sad);
             
+            //Ecstatic data for the past week
             $scope.data[3].push(se);
             $scope.data[3].push(me);
             $scope.data[3].push(tue);
@@ -240,6 +241,7 @@ starter.controller('SelfAnalysisController', function($scope, $rootScope, $fireb
             $scope.data[3].push(fe);
             $scope.data[3].push(sae);
 
+            //Blah data for the past week
             $scope.data[4].push(sb);
             $scope.data[4].push(mb);
             $scope.data[4].push(tub);
@@ -248,6 +250,7 @@ starter.controller('SelfAnalysisController', function($scope, $rootScope, $fireb
             $scope.data[4].push(fb);
             $scope.data[4].push(sab);
 
+            //Happy data for the past week
             $scope.data[5].push(sh);
             $scope.data[5].push(mh);
             $scope.data[5].push(tuh);
@@ -259,11 +262,6 @@ starter.controller('SelfAnalysisController', function($scope, $rootScope, $fireb
         }); 
             
     }
-
-    var setLandmarks = function() {
-        var locRef = new Firebase("https://thevibe.firebaseio.com/Landmarks/");
-        $scope.landmarks = $firebaseArray(locRef);
-    };
 
     $scope.$on("$ionicView.beforeEnter", function(event) {
         initialize();
