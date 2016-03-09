@@ -2,17 +2,16 @@ starter.controller('SelfAnalysisController', function($scope, $rootScope, $fireb
 
     $scope.labels = ["Happy","Sad","Depressed","Ecstatic","Blah"];
     $scope.values = [];
+    $scope.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     $scope.labels1 = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     $scope.series = ['Total EMAs','Sad', 'Depressed', 'Ecstatic','Blah', 'Happy'];
     $scope.data = [[]];
     $scope.showFrequency = false;
     $scope.options = {animationEasing : 'easeOutBounce'};
-     $scope.type = 'Pie';
-     $scope.text = "Radar Chart";
+     $scope.text = "View Timeline";
     $scope.toggleChart = function () {
-      $scope.type = $scope.type === 'PolarArea' ?
-        'Pie' : 'PolarArea';
-        $scope.text = $scope.text === 'Pie Chart'? 'Radar Chart' : 'Pie Chart';
+        $scope.showFrequency = !$scope.showFrequency;
+        $scope.text = $scope.text === 'View Timeline'? 'View Doughnut' : 'View Timeline';
     };
 
     //init
@@ -200,7 +199,7 @@ starter.controller('SelfAnalysisController', function($scope, $rootScope, $fireb
             $scope.values.push(e);
             $scope.values.push(b);     
 
-            $scope.labels1[todaysDay] = $scope.labels1[todaysDay] +  " (Today)";
+            $scope.labels1[todaysDay] =  $scope.days[todaysDay] + "(Today)";
             $scope.data[0] = [];
             $scope.data[1] = [];
             $scope.data[2] = [];
