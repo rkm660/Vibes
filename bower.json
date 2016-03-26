@@ -9,6 +9,8 @@
     "ionic-platform-web-client": "~0.2.1"
   },
   "dependencies": {
-    "bootstrap": "3.x.x"
+    "bootstrap": "3.x.x",
+    "angular-chart.js": "^0.8.8",
+    "Chart.js": "^1.0.2"
   }
 }
