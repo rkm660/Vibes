@@ -1,11 +1,11 @@
-<ion-view view-title="My Vibes">
+<ion-view view-title="My EMAs">
     <ion-nav-buttons side="secondary">
-        <button ng-disabled="showModalDisabled" class="button button-icon ion-compose"  ng-click="showEMAModal()">
+        <button ng-disabled="showModalDisabled" class="button button-icon ion-compose" ng-click="showEMAModal()">
         </button>
     </ion-nav-buttons>
     <ion-content>
         <div class="list">
-            <a ng-click="moreInfo(EMA)" ng-swipe-left="removeEMA(EMA)" class="item item-text-wrap item-avatar" ng-repeat="EMA in EMAs" href="#">
+            <a ng-swipe-left="removeEMA(EMA)" class="item item-text-wrap item-avatar" ng-repeat="EMA in EMAs" href="#">
                 <img class ="emaList" ng-class="{'redSmiley': EMA.mood < 3, 'greenSmiley': EMA.mood > 3, 'smileySelected': EMA.mood == 3}" ng-src="{{moods[EMA.mood-1].url}}" height="40"  />
                 <span class="emaText">
                     "{{EMA.thought}}"
@@ -18,28 +18,35 @@
 <script id="templates/createEMA.html" type="text/ng-template">
     <ion-modal-view>
         <ion-header-bar class="bar bar-header bar-positive">
-            <h1 class="title">New Vibe</h1>
+            <h1 class="title">New EMA</h1>
             <button class="button button-clear button-primary" ng-click="emaModal.hide()">Cancel</button>
         </ion-header-bar>
         <ion-content class="padding">
             <div class="card">
-                <div class="item item-divider">
-                    Hows your mood right now?
-                    <div class="row">
+                <div class="list">
+                    <label class="item item-divider">
+                        Hows your mood right now?
+                    </label>
+                    <div class="item row">
                         <div class="col">
                             <span ng-repeat="mood in moods">
                                 <img ng-class="{ 'smileySelected': $index == selectedIndex, 'smiley':$index != selectedIndex }" ng-src="{{mood.url}}" ng-click="setEmojiValue(mood.id,$index)" />
                             </span>
                         </div>
                     </div>
-                </div>
-                <br>
-                <div class="list">
-                    <label class="item item-input">
+                    <label class="item item-divider">
                         <span class="input-label">Thought</span>
-                        <input ng-model="EMA.thought" type="text">
                     </label>
-                    <label class="item item-input item-select">
+                    <div class="item item-input">
+                        <input ng-model="EMA.thought" type="text">
+                    </div>
+                    <!--<label class="item item-divider">
+                        <span class="input-label">Thought</span>
+                    </label>
+                    <div class="item item-input">
+                        <input ng-model="EMA.thought" type="text" placeholder="Enter here...">
+                    </div>-->
+                    <!--<label class="item item-input item-select">
                         <div class="input-label">
                             Share?
                         </div>
@@ -47,10 +54,159 @@
                             <option value="" selected></option>
                             <option ng-value="landmark.$id" ng-repeat="landmark in landmarks" ng-if="nearbyLandmarks.indexOf(landmark.$id) != -1">{{landmark.name}}</option>
                         </select>
+                    </label>-->
+                    <label class="item item-divider">
+                        <span class="input-label">While eating, were you...</span>
                     </label>
-                    <button ng-disabled="createEMADisabled" class="button button-full button-positive" ng-click="createEMA(EMA)">Create</button>
+                    <div class="list">
+                        <div class="item item-input">
+                            <ion-checkbox ng-model="EMA.q1.a">With Family</ion-checkbox>
+                        </div>
+                        <div class="item item-input">
+                            <ion-checkbox ng-model="EMA.q1.b">With Friends</ion-checkbox>
+                        </div>
+                        <div class="item item-input">
+                            <ion-checkbox ng-model="EMA.q1.c">Working/Studying</ion-checkbox>
+                        </div>
+                        <div class="item item-input">
+                            <ion-checkbox ng-model="EMA.q1.d">Watching TV</ion-checkbox>
+                        </div>
+                        <div class="item item-input">
+                            <ion-checkbox ng-model="EMA.q1.e">At School</ion-checkbox>
+                        </div>
+                        <div class="item item-input">
+                            <ion-checkbox ng-model="EMA.q1.f">At Home</ion-checkbox>
+                        </div>
+                        <div class="item item-input">
+                            <ion-checkbox ng-model="EMA.q1.g">At A Restaurant</ion-checkbox>
+                        </div>
+                        <div class="item item-input">
+                            <ion-checkbox ng-model="EMA.q1.h">Alone</ion-checkbox>
+                        </div>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Do you feel full?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers2" ng-value="item.value" ng-model="EMA.q2" name="q2">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Do you overeat?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers3" ng-value="item.value" ng-model="EMA.q3" name="q3">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Do you sense loss of control while eating?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers4" ng-value="item.value" ng-model="EMA.q4" name="q4">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Anxious?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers5" ng-value="item.value" ng-model="EMA.q5" name="q5">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Worried?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers6" ng-value="item.value" ng-model="EMA.q6" name="q6">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Nervous?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers7" ng-value="item.value" ng-model="EMA.q7" name="q7">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Stressed?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers8" ng-value="item.value" ng-model="EMA.q8" name="q8">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Sad?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers9" ng-value="item.value" ng-model="EMA.q9" name="q9">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Down?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers10" ng-value="item.value" ng-model="EMA.q10" name="q10">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Happy?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers11" ng-value="item.value" ng-model="EMA.q11" name="q11">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Energized or motivated?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers12" ng-value="item.value" ng-model="EMA.q12" name="q12">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Tired or sleepy?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers13" ng-value="item.value" ng-model="EMA.q13" name="q13">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Distracted or having diffulty paying attention?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers14" ng-value="item.value" ng-model="EMA.q14" name="q14">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">Hungry?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers15" ng-value="item.value" ng-model="EMA.q15" name="q15">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <label class="item item-divider">
+                        <span class="input-label">A strong urge to eat something in particular?</span>
+                    </label>
+                    <div class="item item-radio">
+                        <ion-radio ng-repeat="item in answers16" ng-value="item.value" ng-model="EMA.q16" name="q16">
+                            {{ item.text }}
+                        </ion-radio>
+                    </div>
+                    <button ng-disabled="createEMADisabled" class="button button-full button-positive" ng-click="createEMA(EMA)">Create
+                    </button>
                 </div>
-            </div>
         </ion-content>
     </ion-modal-view>
 </script>
