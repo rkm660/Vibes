@@ -13,22 +13,22 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $io
         $scope.createEMADisabled = false;
         $scope.EMA = {
             mood: 3,
-            q1 : null,
-            q2 : 'C',
-            q3 : 'C',
-            q4 : 'C',
-            q5 : 'C',
-            q6 : 'C',
-            q7 : 'C',
-            q8 : 'C',
-            q9 : 'C',
-            q10 : 'C',
-            q11 : 'C',
-            q12 : 'C',
-            q13 : 'C',
-            q14 : 'C',
-            q15 : 'C',
-            q16 : 'C'
+            q1: null,
+            q2: 'C',
+            q3: 'C',
+            q4: 'C',
+            q5: 'C',
+            q6: 'C',
+            q7: 'C',
+            q8: 'C',
+            q9: 'C',
+            q10: 'C',
+            q11: 'C',
+            q12: 'C',
+            q13: 'C',
+            q14: 'C',
+            q15: 'C',
+            q16: 'C'
         };
 
         $scope.answers2 = [
@@ -313,10 +313,24 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $io
             }).then(function(ref) {});
 
             $scope.EMA = {
-                thought: "",
-                mood: null,
-                landmark: null
-            }
+                mood: 3,
+                q1: null,
+                q2: 'C',
+                q3: 'C',
+                q4: 'C',
+                q5: 'C',
+                q6: 'C',
+                q7: 'C',
+                q8: 'C',
+                q9: 'C',
+                q10: 'C',
+                q11: 'C',
+                q12: 'C',
+                q13: 'C',
+                q14: 'C',
+                q15: 'C',
+                q16: 'C'
+            };
             $scope.emaModal.hide();
             $scope.createEMADisabled = false;
             // }).error(function(err) {
@@ -361,7 +375,7 @@ starter.controller('MeController', function($scope, $rootScope, $ionicModal, $io
     };
 
 
-    $scope.questionUpdated = function(q, num){
+    $scope.questionUpdated = function(q, num) {
         console.log(q, num);
     }
 
